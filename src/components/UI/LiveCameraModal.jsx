@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Camera, Video, X, Shield, Sparkles, AlertCircle, Loader2 } from 'lucide-react';
+import { Camera, Video, X, Shield, Sparkles, AlertCircle, Loader2, RefreshCw } from 'lucide-react';
 import * as tf from '@tensorflow/tfjs';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 
@@ -7,6 +7,11 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [cameraMode, setCameraMode] = useState('webcam'); // 'webcam' or 'dashcam'
+  const [facingMode, setFacingMode] = useState(() => {
+    // Default to back/rear camera ('environment') on phones/tablets for road sensing, 'user' on desktop
+    const isMobile = typeof navigator !== 'undefined' && /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent || '');
+    return isMobile ? 'environment' : 'user';
+  });
   const [activeCamAngle, setActiveCamAngle] = useState('Front Camera');
   const [isModelLoading, setIsModelLoading] = useState(true);
   const [model, setModel] = useState(null);
@@ -45,31 +50,6 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
     return () => { isMounted = false; };
   }, []);
 
-  // Start webcam
-  const startWebcam = useCallback(async () => {
-    setCameraError(null);
-    try {
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: 'user' },
-          audio: false,
-        });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          videoRef.current.onloadedmetadata = () => {
-            videoRef.current.play().catch(e => console.warn('Play error:', e));
-          };
-        }
-      } else {
-        throw new Error('Webcam not supported');
-      }
-    } catch (err) {
-      console.warn('Webcam permission denied or unavailable:', err);
-      setCameraError('Webcam unavailable or permission denied. Switched to Bus Dashcam Feed.');
-      setCameraMode('dashcam');
-    }
-  }, []);
-
   // Stop webcam
   const stopWebcam = useCallback(() => {
     if (videoRef.current && videoRef.current.srcObject) {
@@ -78,6 +58,58 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
       videoRef.current.srcObject = null;
     }
   }, []);
+
+  // Start webcam with specified facingMode
+  const startWebcam = useCallback(async (currentFacing = facingMode) => {
+    setCameraError(null);
+    stopWebcam();
+
+    try {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        let stream;
+        try {
+          // Attempt with desired facingMode (environment for rear camera, user for selfie/webcam)
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+              width: { ideal: 1280 },
+              height: { ideal: 720 },
+              facingMode: { ideal: currentFacing },
+            },
+            audio: false,
+          });
+        } catch (firstErr) {
+          // Fallback without strict facingMode if browser/hardware is constrained
+          console.warn('FacingMode constraint fallback:', firstErr);
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: false,
+          });
+        }
+
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.onloadedmetadata = () => {
+            videoRef.current.play().catch(e => console.warn('Play error:', e));
+          };
+        }
+      } else {
+        throw new Error('Webcam not supported by browser');
+      }
+    } catch (err) {
+      console.warn('Webcam permission denied or unavailable:', err);
+      setCameraError('Camera unavailable or permission denied. Switched to Bus Dashcam Feed.');
+      setCameraMode('dashcam');
+    }
+  }, [facingMode, stopWebcam]);
+
+  // Flip camera between Front (user) and Back (environment)
+  const toggleFacingMode = () => {
+    const nextFacing = facingMode === 'environment' ? 'user' : 'environment';
+    setFacingMode(nextFacing);
+    if (cameraMode === 'webcam') {
+      startWebcam(nextFacing);
+    }
+  };
 
   // Handle mode changes cleanly
   const switchMode = (mode) => {
@@ -92,7 +124,7 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
   useEffect(() => {
     if (isOpen) {
       if (cameraMode === 'webcam') {
-        startWebcam();
+        startWebcam(facingMode);
       } else {
         stopWebcam();
       }
@@ -101,7 +133,7 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
       isRunningRef.current = false;
     }
     return () => stopWebcam();
-  }, [isOpen, cameraMode, startWebcam, stopWebcam]);
+  }, [isOpen, cameraMode, startWebcam, stopWebcam, facingMode]);
 
   // Decoupled Background AI Inference Loop (Runs at ~6-8 FPS to avoid locking main thread)
   useEffect(() => {
@@ -337,18 +369,18 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
 
       // Draw Top HUD Info
       ctx.fillStyle = 'rgba(10, 14, 26, 0.85)';
-      ctx.fillRect(12, 12, 280, 68);
+      ctx.fillRect(12, 12, 290, 68);
       ctx.strokeStyle = 'rgba(0, 229, 255, 0.4)';
       ctx.lineWidth = 1;
-      ctx.strokeRect(12, 12, 280, 68);
+      ctx.strokeRect(12, 12, 290, 68);
 
       ctx.fillStyle = '#00E5FF';
       ctx.font = 'bold 11px Inter, sans-serif';
-      ctx.fillText(`🛰️ UrbanSense Edge Vision — ${activeCamAngle}`, 22, 28);
+      ctx.fillText(`🛰️ UrbanSense Edge Vision — ${cameraMode === 'webcam' ? (facingMode === 'environment' ? 'Back / Rear Camera' : 'Front / Selfie Camera') : activeCamAngle}`, 22, 28);
 
       ctx.fillStyle = '#94A3B8';
       ctx.font = '10px Inter, sans-serif';
-      ctx.fillText(`Inference: ${latency}ms | FPS: ${fps || 15} | ${cameraMode === 'webcam' ? 'Live MobileNet-v2' : 'Jetson Orin RT'}`, 22, 46);
+      ctx.fillText(`Inference: ${latency}ms | FPS: ${fps || 15} | ${cameraMode === 'webcam' ? (facingMode === 'environment' ? 'Back Lens (Road AI)' : 'Front Lens') : 'Jetson Orin RT'}`, 22, 46);
       ctx.fillText(`DPDP Privacy Blur: ${privacyBlur ? 'ACTIVE ✅' : 'DISABLED ⚠️'}`, 22, 62);
 
       animationId = requestAnimationFrame(render);
@@ -360,7 +392,7 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
       isRunningRef.current = false;
       if (animationId) cancelAnimationFrame(animationId);
     };
-  }, [isOpen, cameraMode, privacyBlur, latency, fps, activeCamAngle]);
+  }, [isOpen, cameraMode, privacyBlur, latency, fps, activeCamAngle, facingMode]);
 
   const handleManualCapture = () => {
     if (onEmitEvent) {
@@ -377,7 +409,7 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
         lat: 21.1458 + (Math.random() - 0.5) * 0.02,
         lng: 79.0882 + (Math.random() - 0.5) * 0.02,
         busId: 'NMC-E001',
-        camera: activeCamAngle.toLowerCase().split(' ')[0],
+        camera: facingMode === 'environment' ? 'rear' : 'front',
         timestamp: new Date().toISOString(),
         anpr: {
           plateNumber: 'MH-31 AG 4210',
@@ -396,16 +428,16 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
     <div style={{
       position: 'fixed', inset: 0, zIndex: 9999,
       background: 'rgba(5, 8, 16, 0.88)', backdropFilter: 'blur(14px)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20
+      display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 12
     }}>
       <div className="glass-card animate-scale-in" style={{
-        width: '100%', maxWidth: 940, maxHeight: '92vh', overflow: 'hidden',
+        width: '100%', maxWidth: 940, maxHeight: '94vh', overflow: 'hidden',
         display: 'flex', flexDirection: 'column', padding: 0, border: '1px solid rgba(0, 229, 255, 0.35)',
         boxShadow: '0 25px 60px rgba(0, 0, 0, 0.7)'
       }}>
         {/* Modal Header */}
         <div style={{
-          padding: '14px 20px', display: 'flex', alignItems: 'center',
+          padding: '14px 18px', display: 'flex', alignItems: 'center',
           justifyContent: 'space-between', borderBottom: '1px solid var(--border-subtle)',
           background: 'rgba(15, 23, 42, 0.85)'
         }}>
@@ -418,7 +450,7 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
               📹
             </div>
             <div>
-              <h2 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+              <h2 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)' }}>
                 Edge Vision & Live AI Detection Stream
               </h2>
               <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
@@ -434,41 +466,59 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
 
         {/* Controls Bar */}
         <div style={{
-          padding: '10px 20px', background: 'rgba(10, 14, 26, 0.95)',
+          padding: '10px 16px', background: 'rgba(10, 14, 26, 0.95)',
           display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between',
-          gap: 10, borderBottom: '1px solid var(--border-subtle)'
+          gap: 8, borderBottom: '1px solid var(--border-subtle)'
         }}>
           {/* Source Selector */}
-          <div style={{ display: 'flex', gap: 6 }}>
+          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
             <button
               className={`btn btn-sm ${cameraMode === 'webcam' ? 'btn-primary' : 'btn-secondary'}`}
               onClick={() => switchMode('webcam')}
             >
-              <Camera size={14} /> Live Laptop Webcam (Real AI)
+              <Camera size={14} /> Live Device Camera
             </button>
             <button
               className={`btn btn-sm ${cameraMode === 'dashcam' ? 'btn-primary' : 'btn-secondary'}`}
               onClick={() => switchMode('dashcam')}
             >
-              <Video size={14} /> Bus Road Dashcam Stream
+              <Video size={14} /> Bus Dashcam Sim
             </button>
+
+            {/* Quick Camera Lens Switcher (Back / Front) */}
+            {cameraMode === 'webcam' && (
+              <button
+                className="btn btn-sm btn-secondary"
+                onClick={toggleFacingMode}
+                title={`Switch to ${facingMode === 'environment' ? 'Front (Selfie)' : 'Back (Rear)'} Camera`}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  borderColor: 'rgba(0, 229, 255, 0.4)', color: 'var(--text-primary)'
+                }}
+              >
+                <RefreshCw size={13} style={{ color: 'var(--accent-primary)' }} />
+                <span>{facingMode === 'environment' ? '📸 Back Cam (Active)' : '🤳 Front Cam (Active)'}</span>
+              </button>
+            )}
           </div>
 
-          {/* Camera Angles */}
-          <div className="filter-tabs">
-            {['Front Camera', 'Rear Camera', 'Left Side', 'Right Side'].map(angle => (
-              <button
-                key={angle}
-                className={`filter-tab ${activeCamAngle === angle ? 'active' : ''}`}
-                onClick={() => setActiveCamAngle(angle)}
-              >
-                {angle}
-              </button>
-            ))}
-          </div>
+          {/* Camera Angles / Sim Controls */}
+          {cameraMode === 'dashcam' && (
+            <div className="filter-tabs">
+              {['Front Camera', 'Rear Camera', 'Left Side', 'Right Side'].map(angle => (
+                <button
+                  key={angle}
+                  className={`filter-tab ${activeCamAngle === angle ? 'active' : ''}`}
+                  onClick={() => setActiveCamAngle(angle)}
+                >
+                  {angle}
+                </button>
+              ))}
+            </div>
+          )}
 
           {/* Feature Toggles */}
-          <div style={{ display: 'flex', gap: 8 }}>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             <button
               className={`btn btn-sm ${privacyBlur ? 'btn-primary' : 'btn-secondary'}`}
               onClick={() => setPrivacyBlur(!privacyBlur)}
@@ -500,7 +550,8 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
             style={{
               display: cameraMode === 'webcam' ? 'block' : 'none',
               width: '100%', height: '100%', objectFit: 'cover',
-              filter: claheEnabled ? 'contrast(1.2) brightness(1.08)' : 'none'
+              filter: claheEnabled ? 'contrast(1.2) brightness(1.08)' : 'none',
+              transform: (cameraMode === 'webcam' && facingMode === 'user') ? 'scaleX(-1)' : 'none' // Mirror only selfie cam
             }}
           />
 
@@ -512,6 +563,25 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
               pointerEvents: 'none'
             }}
           />
+
+          {/* On-Screen Mobile Quick Camera Flip Button */}
+          {cameraMode === 'webcam' && (
+            <button
+              onClick={toggleFacingMode}
+              style={{
+                position: 'absolute', top: 12, right: 12, zIndex: 20,
+                background: 'rgba(10, 14, 26, 0.88)', backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(0, 229, 255, 0.5)', borderRadius: 24,
+                padding: '6px 14px', color: '#00e5ff', display: 'flex',
+                alignItems: 'center', gap: 6, fontSize: '0.74rem', fontWeight: 700,
+                cursor: 'pointer', boxShadow: 'var(--glow-cyan)'
+              }}
+              aria-label="Flip Camera Lens"
+            >
+              <RefreshCw size={14} />
+              <span>{facingMode === 'environment' ? '📸 Back Lens' : '🤳 Front Lens'}</span>
+            </button>
+          )}
 
           {/* Model Loading Spinner */}
           {isModelLoading && (
@@ -540,11 +610,11 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
 
         {/* Modal Footer / Actions */}
         <div style={{
-          padding: '12px 20px', background: 'rgba(15, 23, 42, 0.95)',
+          padding: '12px 18px', background: 'rgba(15, 23, 42, 0.95)',
           display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between',
-          gap: 12, borderTop: '1px solid var(--border-subtle)'
+          gap: 10, borderTop: '1px solid var(--border-subtle)'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14, fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
             <span>⚡ Model: <strong style={{ color: 'var(--accent-primary)' }}>MobileNet-v2 (COCO)</strong></span>
             <span>🎯 Live Detections: <strong>{detectedItems.length > 0 ? detectedItems.join(', ') : (cameraMode === 'dashcam' ? 'Vehicle [97%], Pothole [93%]' : 'Scanning scene...')}</strong></span>
           </div>
@@ -555,7 +625,7 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
               className="btn btn-primary"
               style={{ padding: '7px 14px', fontSize: '0.78rem' }}
             >
-              🚀 Publish Verified Event to Feed
+              🚀 Publish Verified Event
             </button>
             <button
               onClick={onClose}
@@ -570,3 +640,4 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
     </div>
   );
 }
+
