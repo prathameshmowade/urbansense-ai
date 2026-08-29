@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/UI/Sidebar';
 import AlertBanner from './components/UI/AlertBanner';
 import LiveCameraModal from './components/UI/LiveCameraModal';
+import { MobileHeader, MobileBottomNav } from './components/UI/MobileNav';
 import CommandCenter from './pages/CommandCenter';
 import FleetTracker from './pages/FleetTracker';
 import RoadIntelligence from './pages/RoadIntelligence';
@@ -11,10 +12,6 @@ import IncidentManager from './pages/IncidentManager';
 import EdgeMonitor from './pages/EdgeMonitor';
 import CoverageAnalysis from './pages/CoverageAnalysis';
 import FleetSimulator from './data/simulator';
-
-// Remove default Vite styles
-const styleSheets = document.querySelectorAll('link[rel="stylesheet"]');
-// Keep only index.css
 
 function App() {
   const simulatorRef = useRef(null);
@@ -29,6 +26,7 @@ function App() {
   const [roadHealth, setRoadHealth] = useState([]);
   const [criticalAlert, setCriticalAlert] = useState(null);
   const [isLiveCameraOpen, setIsLiveCameraOpen] = useState(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   // Initialize simulator
   useEffect(() => {
@@ -71,7 +69,20 @@ function App() {
   return (
     <BrowserRouter>
       <div className="app-layout">
-        <Sidebar stats={stats} />
+        {/* Responsive Mobile Header */}
+        <MobileHeader
+          onToggleMenu={() => setIsMobileNavOpen(!isMobileNavOpen)}
+          isMenuOpen={isMobileNavOpen}
+          onOpenLiveCamera={() => setIsLiveCameraOpen(true)}
+          stats={stats}
+        />
+
+        {/* Sidebar with Mobile Drawer support */}
+        <Sidebar
+          stats={stats}
+          isOpen={isMobileNavOpen}
+          onClose={() => setIsMobileNavOpen(false)}
+        />
 
         {criticalAlert && (
           <AlertBanner event={criticalAlert} onDismiss={dismissAlert} />
@@ -129,6 +140,12 @@ function App() {
             } />
           </Routes>
         </div>
+
+        {/* Responsive Mobile Bottom Navigation */}
+        <MobileBottomNav
+          onToggleMenu={() => setIsMobileNavOpen(!isMobileNavOpen)}
+          stats={stats}
+        />
       </div>
     </BrowserRouter>
   );
