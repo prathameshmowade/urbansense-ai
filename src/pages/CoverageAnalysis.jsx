@@ -36,10 +36,10 @@ export default function CoverageAnalysis({ buses, stats }) {
       </div>
 
       <div className="kpi-grid stagger-children">
-        <KPICard label="Routes Covered" value={routeStats.filter(r => r.activeBuses > 0).length} icon="🛣️" trend="up" trendLabel={`of ${routeStats.length} total routes`} accentColor="linear-gradient(135deg, #22c55e, #16a34a)" bgColor="rgba(34,197,94,0.12)" />
-        <KPICard label="Avg Coverage" value={avgCoverage} icon="📡" trend={avgCoverage > 70 ? 'up' : 'down'} trendLabel="% of route network" accentColor="linear-gradient(135deg, #00e5ff, #06b6d4)" bgColor="rgba(0,229,255,0.12)" />
-        <KPICard label="Blind Spots" value={blindSpots} icon="👁️" trend={blindSpots > 2 ? 'up' : 'down'} trendLabel="Routes with low coverage" accentColor="linear-gradient(135deg, #ef4444, #dc2626)" bgColor="rgba(239,68,68,0.12)" />
-        <KPICard label="Fleet Efficiency" value={stats.coveragePercent} icon="📊" trend="up" trendLabel="% optimal deployment" accentColor="linear-gradient(135deg, #7c3aed, #a855f7)" bgColor="rgba(124,58,237,0.12)" />
+        <KPICard label="Routes Covered" value={routeStats.filter(r => r.activeBuses > 0).length} icon="🛣️" trend="up" trendLabel={`of ${routeStats.length} total routes`} bgColor="#ecfdf5" />
+        <KPICard label="Avg Coverage" value={avgCoverage} icon="📡" trend={avgCoverage > 70 ? 'up' : 'down'} trendLabel="% of route network" bgColor="#eff6ff" />
+        <KPICard label="Blind Spots" value={blindSpots} icon="👁️" trend={blindSpots > 2 ? 'up' : 'down'} trendLabel="Routes with low coverage" bgColor="#fef2f2" />
+        <KPICard label="Fleet Efficiency" value={stats.coveragePercent} icon="📊" trend="up" trendLabel="% optimal deployment" bgColor="#f5f3ff" />
       </div>
 
       <div className="grid-map-panel">
@@ -58,17 +58,17 @@ export default function CoverageAnalysis({ buses, stats }) {
 
             {routeStats.map((route) => (
               <div key={route.id} style={{
-                padding: '12px 0', borderBottom: '1px solid var(--border-subtle)',
+                padding: '10px 0', borderBottom: '1px solid var(--border-subtle)',
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span style={{ width: 10, height: 10, borderRadius: '50%', background: route.color, display: 'inline-block' }}></span>
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: route.color, display: 'inline-block' }}></span>
                     <span style={{ fontWeight: 600, fontSize: '0.82rem', color: 'var(--text-primary)' }}>{route.id}</span>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{route.name}</span>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>{route.name}</span>
                   </div>
                   <span style={{
-                    fontSize: '0.7rem', fontWeight: 700, fontFamily: 'var(--font-mono)',
-                    color: route.coverage > 70 ? '#22c55e' : route.coverage > 40 ? '#f59e0b' : '#ef4444',
+                    fontSize: '0.72rem', fontWeight: 700, fontFamily: 'var(--font-mono)',
+                    color: route.coverage > 70 ? 'var(--accent-success)' : route.coverage > 40 ? 'var(--accent-warning)' : 'var(--accent-danger)',
                   }}>
                     {route.coverage}%
                   </span>
@@ -77,12 +77,12 @@ export default function CoverageAnalysis({ buses, stats }) {
                 <div className="progress-bar" style={{ marginBottom: 6 }}>
                   <div className="progress-fill" style={{
                     width: `${route.coverage}%`,
-                    background: route.coverage > 70 ? '#22c55e' : route.coverage > 40 ? '#f59e0b' : '#ef4444',
+                    background: route.coverage > 70 ? 'var(--accent-success)' : route.coverage > 40 ? 'var(--accent-warning)' : 'var(--accent-danger)',
                   }}></div>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.68rem', color: 'var(--text-muted)' }}>
-                  <span>🚌 {route.activeBuses}/{route.busCount} buses active</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                  <span>🚌 {route.activeBuses}/{route.busCount} active</span>
                   <span>🕐 {route.lastScanned}</span>
                 </div>
               </div>
@@ -90,16 +90,15 @@ export default function CoverageAnalysis({ buses, stats }) {
           </div>
 
           {blindSpots > 0 && (
-            <div className="glass-card" style={{ borderColor: 'rgba(239,68,68,0.2)', background: 'rgba(239,68,68,0.05)' }}>
-              <div className="card-title" style={{ color: '#ef4444' }}>⚠️ Blind Spot Recommendations</div>
-              <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                <p style={{ marginBottom: 8 }}>
-                  <strong>{blindSpots}</strong> route(s) have less than 50% coverage. Consider:
+            <div className="card" style={{ borderColor: 'var(--accent-danger-border)', background: 'var(--accent-danger-subtle)' }}>
+              <div className="card-title" style={{ color: 'var(--accent-danger)' }}>⚠️ Blind Spot Recommendations</div>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>
+                <p style={{ marginBottom: 6 }}>
+                  <strong>{blindSpots}</strong> route(s) have less than 50% scan coverage:
                 </p>
-                <ul style={{ paddingLeft: 16, display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  <li>Reassigning idle buses to under-covered routes</li>
-                  <li>Increasing bus frequency during peak scan hours</li>
-                  <li>Deploying supplementary fixed sensors at critical blind spots</li>
+                <ul style={{ paddingLeft: 16, display: 'flex', flexDirection: 'column', gap: 3 }}>
+                  <li>Reassign idle buses to under-covered routes</li>
+                  <li>Increase bus frequency during peak scan hours</li>
                 </ul>
               </div>
             </div>

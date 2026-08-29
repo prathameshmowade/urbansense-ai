@@ -44,10 +44,10 @@ export default function KPICard({ label, value, icon, trend, trendLabel, accentC
   const TrendIcon = trend === 'up' ? TrendingUp : trend === 'down' ? TrendingDown : Minus;
 
   return (
-    <div className="kpi-card" style={{ '--kpi-accent': accentColor || 'var(--gradient-primary)', '--kpi-bg': bgColor || 'var(--accent-primary-dim)' }}>
+    <div className="kpi-card">
       <div className="kpi-header">
         <span className="kpi-label">{label}</span>
-        <div className="kpi-icon" style={{ background: bgColor || 'var(--accent-primary-dim)' }}>
+        <div className="kpi-icon" style={{ background: bgColor || 'var(--bg-surface-subtle)', borderColor: accentColor ? `${accentColor}30` : 'var(--border-subtle)' }}>
           {icon}
         </div>
       </div>

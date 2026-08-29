@@ -16,10 +16,10 @@ export default function FleetTracker({ buses, stats }) {
       </div>
 
       <div className="kpi-grid stagger-children">
-        <KPICard label="Total Fleet" value={25} icon="🚌" trend="neutral" trendLabel="PM-eBus Sewa Nagpur" />
-        <KPICard label="Active" value={activeBuses.length} icon="✅" trend="up" trendLabel="Currently operational" accentColor="linear-gradient(135deg, #22c55e, #16a34a)" bgColor="rgba(34,197,94,0.12)" />
-        <KPICard label="Avg Speed" value={avgSpeed} icon="💨" trend="neutral" trendLabel="km/h across fleet" accentColor="linear-gradient(135deg, #3b82f6, #2563eb)" bgColor="rgba(59,130,246,0.12)" />
-        <KPICard label="Avg GPU Load" value={avgGpu} icon="🖥️" trend="neutral" trendLabel="% edge utilization" accentColor="linear-gradient(135deg, #f59e0b, #d97706)" bgColor="rgba(245,158,11,0.12)" />
+        <KPICard label="Total Fleet" value={25} icon="🚌" trend="neutral" trendLabel="PM-eBus Sewa Nagpur" bgColor="#eff6ff" />
+        <KPICard label="Active Buses" value={activeBuses.length} icon="✅" trend="up" trendLabel="Currently operational" bgColor="#ecfdf5" />
+        <KPICard label="Avg Speed" value={avgSpeed} icon="💨" trend="neutral" trendLabel="km/h across fleet" bgColor="#f0f9ff" />
+        <KPICard label="Avg GPU Load" value={avgGpu} icon="🖥️" trend="neutral" trendLabel="% edge utilization" bgColor="#fffbeb" />
       </div>
 
       <div className="grid-map-panel">

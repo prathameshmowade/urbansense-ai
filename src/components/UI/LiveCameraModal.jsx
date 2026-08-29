@@ -427,46 +427,47 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
   return (
     <div style={{
       position: 'fixed', inset: 0, zIndex: 9999,
-      background: 'rgba(5, 8, 16, 0.88)', backdropFilter: 'blur(14px)',
+      background: 'rgba(15, 23, 42, 0.55)', backdropFilter: 'blur(6px)',
       display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 12
     }}>
-      <div className="glass-card animate-scale-in" style={{
-        width: '100%', maxWidth: 940, maxHeight: '94vh', overflow: 'hidden',
-        display: 'flex', flexDirection: 'column', padding: 0, border: '1px solid rgba(0, 229, 255, 0.35)',
-        boxShadow: '0 25px 60px rgba(0, 0, 0, 0.7)'
+      <div className="card animate-scale-in" style={{
+        width: '100%', maxWidth: 920, maxHeight: '94vh', overflow: 'hidden',
+        display: 'flex', flexDirection: 'column', padding: 0,
+        background: '#ffffff', border: '1px solid var(--border-medium)',
+        boxShadow: 'var(--shadow-xl)', borderRadius: 14
       }}>
         {/* Modal Header */}
         <div style={{
           padding: '14px 18px', display: 'flex', alignItems: 'center',
           justifyContent: 'space-between', borderBottom: '1px solid var(--border-subtle)',
-          background: 'rgba(15, 23, 42, 0.85)'
+          background: '#ffffff'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{
-              width: 36, height: 36, borderRadius: 8, background: 'var(--gradient-primary)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem',
-              boxShadow: 'var(--glow-cyan)'
+              width: 32, height: 32, borderRadius: 8, background: 'var(--primary-subtle)',
+              border: '1px solid var(--primary-border)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem'
             }}>
               📹
             </div>
             <div>
-              <h2 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+              <h2 style={{ fontSize: '0.98rem', fontWeight: 700, color: 'var(--text-primary)' }}>
                 Edge Vision & Live AI Detection Stream
               </h2>
               <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-                {isModelLoading ? '⏳ Initializing MobileNet-v2 Neural Network...' : '✅ Real-Time Object & Road Defect Detection Active'}
+                {isModelLoading ? 'Initializing MobileNet-v2 Neural Network...' : 'Real-Time Edge Computer Vision Active'}
               </p>
             </div>
           </div>
 
-          <button onClick={onClose} className="btn-secondary" style={{ padding: '6px 10px', borderRadius: 8 }}>
+          <button onClick={onClose} className="btn-secondary" style={{ padding: '5px 8px', borderRadius: 6 }}>
             <X size={18} />
           </button>
         </div>
 
         {/* Controls Bar */}
         <div style={{
-          padding: '10px 16px', background: 'rgba(10, 14, 26, 0.95)',
+          padding: '10px 16px', background: '#f8fafc',
           display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between',
           gap: 8, borderBottom: '1px solid var(--border-subtle)'
         }}>
@@ -493,10 +494,10 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
                 title={`Switch to ${facingMode === 'environment' ? 'Front (Selfie)' : 'Back (Rear)'} Camera`}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 6,
-                  borderColor: 'rgba(0, 229, 255, 0.4)', color: 'var(--text-primary)'
+                  color: 'var(--text-primary)', fontWeight: 600
                 }}
               >
-                <RefreshCw size={13} style={{ color: 'var(--accent-primary)' }} />
+                <RefreshCw size={13} style={{ color: 'var(--primary)' }} />
                 <span>{facingMode === 'environment' ? '📸 Back Cam (Active)' : '🤳 Front Cam (Active)'}</span>
               </button>
             )}
@@ -538,7 +539,7 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
 
         {/* Video Viewport Area */}
         <div style={{
-          position: 'relative', width: '100%', height: 'min(380px, 45vh)', background: '#020617',
+          position: 'relative', width: '100%', height: 'min(380px, 45vh)', background: '#090d16',
           overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center'
         }}>
           {/* Real Video Element (rendered directly) */}
@@ -551,7 +552,7 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
               display: cameraMode === 'webcam' ? 'block' : 'none',
               width: '100%', height: '100%', objectFit: 'cover',
               filter: claheEnabled ? 'contrast(1.2) brightness(1.08)' : 'none',
-              transform: (cameraMode === 'webcam' && facingMode === 'user') ? 'scaleX(-1)' : 'none' // Mirror only selfie cam
+              transform: (cameraMode === 'webcam' && facingMode === 'user') ? 'scaleX(-1)' : 'none'
             }}
           />
 
@@ -570,11 +571,11 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
               onClick={toggleFacingMode}
               style={{
                 position: 'absolute', top: 12, right: 12, zIndex: 20,
-                background: 'rgba(10, 14, 26, 0.88)', backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(0, 229, 255, 0.5)', borderRadius: 24,
-                padding: '6px 14px', color: '#00e5ff', display: 'flex',
-                alignItems: 'center', gap: 6, fontSize: '0.74rem', fontWeight: 700,
-                cursor: 'pointer', boxShadow: 'var(--glow-cyan)'
+                background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 20,
+                padding: '6px 12px', color: '#ffffff', display: 'flex',
+                alignItems: 'center', gap: 6, fontSize: '0.74rem', fontWeight: 600,
+                cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
               }}
               aria-label="Flip Camera Lens"
             >
@@ -586,21 +587,21 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
           {/* Model Loading Spinner */}
           {isModelLoading && (
             <div style={{
-              position: 'absolute', inset: 0, background: 'rgba(10, 14, 26, 0.8)',
+              position: 'absolute', inset: 0, background: 'rgba(15, 23, 42, 0.85)',
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-              color: 'var(--text-primary)', gap: 12
+              color: '#ffffff', gap: 10
             }}>
-              <Loader2 className="animate-spin" size={32} color="#00e5ff" />
-              <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>Loading Edge Vision Neural Network...</div>
+              <Loader2 className="animate-spin" size={30} color="#38bdf8" />
+              <div style={{ fontSize: '0.84rem', fontWeight: 600 }}>Loading Edge Vision Neural Network...</div>
             </div>
           )}
 
           {/* Camera Error Message */}
           {cameraError && cameraMode === 'webcam' && (
             <div style={{
-              position: 'absolute', top: 20, background: 'rgba(239, 68, 68, 0.2)',
-              border: '1px solid rgba(239, 68, 68, 0.4)', borderRadius: 8, padding: '8px 16px',
-              display: 'flex', alignItems: 'center', gap: 8, color: '#ef4444', fontSize: '0.78rem'
+              position: 'absolute', top: 16, background: '#fef2f2',
+              border: '1px solid #fecaca', borderRadius: 8, padding: '8px 14px',
+              display: 'flex', alignItems: 'center', gap: 8, color: '#dc2626', fontSize: '0.78rem'
             }}>
               <AlertCircle size={16} />
               {cameraError}
@@ -610,13 +611,13 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
 
         {/* Modal Footer / Actions */}
         <div style={{
-          padding: '12px 18px', background: 'rgba(15, 23, 42, 0.95)',
+          padding: '12px 18px', background: '#ffffff',
           display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between',
           gap: 10, borderTop: '1px solid var(--border-subtle)'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-            <span>⚡ Model: <strong style={{ color: 'var(--accent-primary)' }}>MobileNet-v2 (COCO)</strong></span>
-            <span>🎯 Live Detections: <strong>{detectedItems.length > 0 ? detectedItems.join(', ') : (cameraMode === 'dashcam' ? 'Vehicle [97%], Pothole [93%]' : 'Scanning scene...')}</strong></span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: '0.76rem', color: 'var(--text-secondary)' }}>
+            <span>Model: <strong style={{ color: 'var(--text-primary)' }}>MobileNet-v2 (COCO)</strong></span>
+            <span>Live Detections: <strong style={{ color: 'var(--text-primary)' }}>{detectedItems.length > 0 ? detectedItems.join(', ') : (cameraMode === 'dashcam' ? 'Vehicle [97%], Pothole [93%]' : 'Scanning scene...')}</strong></span>
           </div>
 
           <div style={{ display: 'flex', gap: 8 }}>
@@ -625,7 +626,7 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
               className="btn btn-primary"
               style={{ padding: '7px 14px', fontSize: '0.78rem' }}
             >
-              🚀 Publish Verified Event
+              Publish Verified Event
             </button>
             <button
               onClick={onClose}

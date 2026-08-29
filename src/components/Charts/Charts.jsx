@@ -4,41 +4,41 @@ import { Doughnut, Bar, Line } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Filler);
 
-// Base tooltip & font theme
+// Base tooltip & font theme for light UI
 const basePlugins = {
   legend: {
     labels: {
-      color: '#94a3b8',
-      font: { family: "'Inter', sans-serif", size: 11 },
+      color: '#475569',
+      font: { family: "'Inter', sans-serif", size: 11, weight: '500' },
       padding: 10,
       usePointStyle: true,
       pointStyleWidth: 8,
     },
   },
   tooltip: {
-    backgroundColor: 'rgba(15, 23, 42, 0.95)',
-    titleColor: '#f1f5f9',
-    bodyColor: '#94a3b8',
-    borderColor: 'rgba(148, 163, 184, 0.25)',
+    backgroundColor: '#0f172a',
+    titleColor: '#ffffff',
+    bodyColor: '#cbd5e1',
+    borderColor: '#334155',
     borderWidth: 1,
-    cornerRadius: 8,
-    padding: 10,
-    titleFont: { family: "'Inter', sans-serif", weight: '600' },
-    bodyFont: { family: "'Inter', sans-serif" },
+    cornerRadius: 6,
+    padding: 9,
+    titleFont: { family: "'Inter', sans-serif", weight: '600', size: 11 },
+    bodyFont: { family: "'Inter', sans-serif", size: 11 },
   },
 };
 
-// Cartesian scales for Bar and Line charts ONLY
+// Cartesian scales for Bar and Line charts
 const cartesianScales = {
   x: {
     ticks: { color: '#64748b', font: { family: "'Inter', sans-serif", size: 10 } },
-    grid: { color: 'rgba(148, 163, 184, 0.06)' },
-    border: { color: 'rgba(148, 163, 184, 0.1)' },
+    grid: { color: '#f1f5f9' },
+    border: { color: '#e2e8f0' },
   },
   y: {
     ticks: { color: '#64748b', font: { family: "'Inter', sans-serif", size: 10 } },
-    grid: { color: 'rgba(148, 163, 184, 0.06)' },
-    border: { color: 'rgba(148, 163, 184, 0.1)' },
+    grid: { color: '#f1f5f9' },
+    border: { color: '#e2e8f0' },
   },
 };
 

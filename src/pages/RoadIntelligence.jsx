@@ -49,10 +49,10 @@ export default function RoadIntelligence({ buses, events, roadHealth }) {
       </div>
 
       <div className="kpi-grid stagger-children">
-        <KPICard label="Potholes" value={potholeCount || 24} icon="🕳️" trend="up" trendLabel="Detected today" accentColor="linear-gradient(135deg, #f97316, #fb923c)" bgColor="rgba(249,115,22,0.12)" />
-        <KPICard label="Road Cracks" value={crackCount || 18} icon="⚡" trend="up" trendLabel="Surface damage" accentColor="linear-gradient(135deg, #dc2626, #ef4444)" bgColor="rgba(220,38,38,0.12)" />
-        <KPICard label="Infra Deficiency" value={infraCount || 9} icon="🚧" trend="neutral" trendLabel="Missing/damaged infra" accentColor="linear-gradient(135deg, #06b6d4, #0ea5e9)" bgColor="rgba(6,182,212,0.12)" />
-        <KPICard label="Avg Road Health" value={avgHealth} icon="🛣️" trend={avgHealth > 70 ? 'up' : 'down'} trendLabel="Score out of 100" accentColor="linear-gradient(135deg, #22c55e, #16a34a)" bgColor="rgba(34,197,94,0.12)" />
+        <KPICard label="Potholes" value={potholeCount || 24} icon="🕳️" trend="up" trendLabel="Detected today" bgColor="#fff7ed" />
+        <KPICard label="Road Cracks" value={crackCount || 18} icon="⚡" trend="up" trendLabel="Surface damage" bgColor="#fef2f2" />
+        <KPICard label="Infra Deficiency" value={infraCount || 9} icon="🚧" trend="neutral" trendLabel="Missing/damaged infra" bgColor="#eff6ff" />
+        <KPICard label="Avg Road Health" value={avgHealth} icon="🛣️" trend={avgHealth > 70 ? 'up' : 'down'} trendLabel="Score out of 100" bgColor="#ecfdf5" />
       </div>
 
       <div className="grid-map-panel">
@@ -74,18 +74,18 @@ export default function RoadIntelligence({ buses, events, roadHealth }) {
 
           <div className="glass-card">
             <div className="card-title">🔧 Priority Repair Queue</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               {filteredEvents.filter(e => !e.isDuplicate).slice(0, 6).map((e, i) => (
                 <div key={e.id} style={{
-                  display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px',
-                  borderRadius: 'var(--radius-sm)', background: 'rgba(15,23,42,0.5)',
+                  display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px',
+                  borderRadius: 'var(--radius-sm)', background: 'var(--bg-surface-subtle)',
                   border: '1px solid var(--border-subtle)',
                 }}>
-                  <span style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-muted)', width: 20 }}>#{i + 1}</span>
-                  <span style={{ fontSize: '0.9rem' }}>{e.icon}</span>
+                  <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-muted)', width: 22 }}>#{i + 1}</span>
+                  <span style={{ fontSize: '0.95rem' }}>{e.icon}</span>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-primary)' }}>{e.label}</div>
-                    <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>{e.busId} · {Math.round(e.confidence * 100)}% conf</div>
+                    <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)' }}>{e.label}</div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{e.busId} · {Math.round(e.confidence * 100)}% confidence</div>
                   </div>
                   <span className={`badge badge-${e.severity.toLowerCase()}`}>{e.severity}</span>
                 </div>

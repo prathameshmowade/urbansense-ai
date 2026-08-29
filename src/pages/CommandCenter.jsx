@@ -10,22 +10,21 @@ export default function CommandCenter({ buses, events, stats, congestionData, ro
       <div className="page-header">
         <div>
           <h1>Command Center</h1>
-          <div className="subtitle">Real-time urban intelligence overview — Nagpur</div>
+          <div className="subtitle">Real-time urban transit & sensing intelligence overview — Nagpur</div>
         </div>
-        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
           <button
             onClick={onOpenLiveCamera}
             className="btn btn-primary"
-            style={{ padding: '7px 14px', fontSize: '0.78rem', boxShadow: 'var(--glow-cyan)' }}
           >
-            📹 Connect Live Camera & AI Vision
+            📹 Connect Live Camera & Vision
           </button>
-          <span className="badge badge-active" style={{ fontSize: '0.7rem' }}>
-            <span className="live-dot" style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', display: 'inline-block' }}></span>
+          <span className="badge badge-active">
+            <span className="live-dot"></span>
             LIVE
           </span>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            {new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+          <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+            {new Date().toLocaleDateString('en-IN', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}
           </span>
         </div>
       </div>
@@ -38,8 +37,7 @@ export default function CommandCenter({ buses, events, stats, congestionData, ro
           icon="🚌"
           trend="up"
           trendLabel={`${stats.busesActive}/25 fleet online`}
-          accentColor="linear-gradient(135deg, #00e5ff, #06b6d4)"
-          bgColor="rgba(0, 229, 255, 0.12)"
+          bgColor="#eff6ff"
         />
         <KPICard
           label="Events Today"
@@ -47,8 +45,7 @@ export default function CommandCenter({ buses, events, stats, congestionData, ro
           icon="📊"
           trend="up"
           trendLabel="Real-time detections"
-          accentColor="linear-gradient(135deg, #7c3aed, #a855f7)"
-          bgColor="rgba(124, 58, 237, 0.12)"
+          bgColor="#f5f3ff"
         />
         <KPICard
           label="Active Alerts"
@@ -56,8 +53,7 @@ export default function CommandCenter({ buses, events, stats, congestionData, ro
           icon="🚨"
           trend={stats.activeAlerts > 3 ? 'up' : 'neutral'}
           trendLabel="Critical & high severity"
-          accentColor="linear-gradient(135deg, #ef4444, #dc2626)"
-          bgColor="rgba(239, 68, 68, 0.12)"
+          bgColor="#fef2f2"
         />
         <KPICard
           label="Duplicates Avoided"
@@ -65,8 +61,7 @@ export default function CommandCenter({ buses, events, stats, congestionData, ro
           icon="🔄"
           trend="down"
           trendLabel={`${stats.bandwidthSaved}% bandwidth saved`}
-          accentColor="linear-gradient(135deg, #22c55e, #16a34a)"
-          bgColor="rgba(34, 197, 94, 0.12)"
+          bgColor="#ecfdf5"
         />
         <KPICard
           label="Fleet Coverage"
@@ -74,8 +69,7 @@ export default function CommandCenter({ buses, events, stats, congestionData, ro
           icon="📡"
           trend="up"
           trendLabel="Road network scanned"
-          accentColor="linear-gradient(135deg, #f59e0b, #eab308)"
-          bgColor="rgba(245, 158, 11, 0.12)"
+          bgColor="#fffbeb"
         />
       </div>
 

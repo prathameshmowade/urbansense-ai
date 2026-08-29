@@ -46,15 +46,15 @@ export default function IncidentManager({ events }) {
       </div>
 
       <div className="kpi-grid stagger-children">
-        <KPICard label="Hit & Run" value={hitAndRunCount || 2} icon="🚨" trend="neutral" trendLabel="Detected today" accentColor="linear-gradient(135deg, #ef4444, #dc2626)" bgColor="rgba(239,68,68,0.12)" />
-        <KPICard label="Violations" value={violationCount || 38} icon="🚦" trend="up" trendLabel="RLVD / SVD / Helmet" accentColor="linear-gradient(135deg, #a855f7, #7c3aed)" bgColor="rgba(168,85,247,0.12)" />
-        <KPICard label="ANPR Captures" value={anprCaptures || 15} icon="📸" trend="up" trendLabel="Plates extracted" accentColor="linear-gradient(135deg, #06b6d4, #0ea5e9)" bgColor="rgba(6,182,212,0.12)" />
-        <KPICard label="Avg OCR Conf." value={avgOcrConf} icon="🎯" trend="up" trendLabel="% plate accuracy" accentColor="linear-gradient(135deg, #22c55e, #16a34a)" bgColor="rgba(34,197,94,0.12)" />
+        <KPICard label="Hit & Run" value={hitAndRunCount || 2} icon="🚨" trend="neutral" trendLabel="Detected today" bgColor="#fef2f2" />
+        <KPICard label="Violations" value={violationCount || 38} icon="🚦" trend="up" trendLabel="RLVD / SVD / Helmet" bgColor="#f5f3ff" />
+        <KPICard label="ANPR Captures" value={anprCaptures || 15} icon="📸" trend="up" trendLabel="Plates extracted" bgColor="#f0f9ff" />
+        <KPICard label="Avg OCR Conf." value={avgOcrConf} icon="🎯" trend="up" trendLabel="% plate accuracy" bgColor="#ecfdf5" />
       </div>
 
       <div className="grid-2">
         {/* Event List */}
-        <div className="glass-card" style={{ overflow: 'auto', maxHeight: 500 }}>
+        <div className="glass-card" style={{ overflow: 'auto', maxHeight: 520 }}>
           <div className="card-title">
             {tab === 'incidents' ? '🚨 Incident Log' : '🚦 Violation Log'}
           </div>
@@ -68,19 +68,18 @@ export default function IncidentManager({ events }) {
 
           {currentList.map((event) => (
             <div key={event.id} style={{
-              padding: '14px 16px', marginBottom: 8, borderRadius: 'var(--radius-sm)',
-              background: 'rgba(15,23,42,0.5)', border: '1px solid var(--border-subtle)',
-              animation: 'slideInRight 0.3s ease-out',
+              padding: '12px 14px', marginBottom: 8, borderRadius: 'var(--radius-sm)',
+              background: 'var(--bg-surface-subtle)', border: '1px solid var(--border-subtle)',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ fontSize: '1.1rem' }}>{event.icon}</span>
-                  <span style={{ fontWeight: 700, fontSize: '0.85rem', color: event.color }}>{event.label}</span>
+                  <span style={{ fontSize: '1rem' }}>{event.icon}</span>
+                  <span style={{ fontWeight: 700, fontSize: '0.84rem', color: 'var(--text-primary)' }}>{event.label}</span>
                 </div>
                 <span className={`badge badge-${event.severity.toLowerCase()}`}>{event.severity}</span>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 16px', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 16px', fontSize: '0.74rem', color: 'var(--text-secondary)' }}>
                 <div>Bus: <strong>{event.busId}</strong></div>
                 <div>Camera: <strong>{event.camera}</strong></div>
                 <div>Time: <strong>{formatTime(event.timestamp)}</strong></div>
@@ -89,14 +88,14 @@ export default function IncidentManager({ events }) {
 
               {event.anpr && (
                 <div style={{
-                  marginTop: 8, padding: '8px 12px', borderRadius: 8,
-                  background: 'rgba(0,229,255,0.06)', border: '1px solid rgba(0,229,255,0.15)',
+                  marginTop: 8, padding: '8px 12px', borderRadius: 6,
+                  background: '#ffffff', border: '1px solid var(--border-subtle)',
                 }}>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
+                  <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>
                     📸 ANPR Evidence
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4, fontSize: '0.78rem' }}>
-                    <div>Plate: <strong style={{ fontFamily: 'var(--font-mono)', color: 'var(--accent-primary)' }}>{event.anpr.plateNumber}</strong></div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4, fontSize: '0.76rem' }}>
+                    <div>Plate: <strong style={{ fontFamily: 'var(--font-mono)', color: 'var(--primary)' }}>{event.anpr.plateNumber}</strong></div>
                     <div>OCR: <strong>{Math.round(event.anpr.ocrConfidence * 100)}%</strong></div>
                     <div>Vehicle: <strong>{event.anpr.vehicleType}</strong></div>
                     <div>Color: <strong>{event.anpr.vehicleColor}</strong></div>
@@ -105,8 +104,8 @@ export default function IncidentManager({ events }) {
               )}
 
               {event.speedData && (
-                <div style={{ marginTop: 8, fontSize: '0.75rem', color: 'var(--accent-danger)' }}>
-                  ⚡ Detected: <strong>{event.speedData.detected} km/h</strong> (Limit: {event.speedData.limit} km/h)
+                <div style={{ marginTop: 8, fontSize: '0.74rem', color: 'var(--accent-danger)' }}>
+                  ⚡ Speed: <strong>{event.speedData.detected} km/h</strong> (Limit: {event.speedData.limit} km/h)
                 </div>
               )}
             </div>
