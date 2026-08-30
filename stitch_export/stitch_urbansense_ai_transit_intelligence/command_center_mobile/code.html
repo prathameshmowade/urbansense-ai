@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UrbanSense AI - Command Center (Mobile)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#eaf1ff",
+                        "outline": "#76777d",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-container-high": "#dce9ff",
+                        "secondary-fixed-dim": "#ffb690",
+                        "primary-fixed": "#dae2fd",
+                        "on-secondary-fixed": "#341100",
+                        "secondary-fixed": "#ffdbca",
+                        "inverse-primary": "#bec6e0",
+                        "on-tertiary-fixed": "#002113",
+                        "tertiary-fixed": "#6ffbbe",
+                        "secondary-container": "#fd761a",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "background": "#f8f9ff",
+                        "on-surface": "#0b1c30",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "error": "#ba1a1a",
+                        "primary": "#000000",
+                        "on-primary-fixed": "#131b2e",
+                        "surface": "#f8f9ff",
+                        "surface-container": "#e5eeff",
+                        "on-secondary-container": "#5c2400",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#45464d",
+                        "secondary": "#9d4300",
+                        "outline-variant": "#c6c6cd",
+                        "on-secondary-fixed-variant": "#783200",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#002113",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed-dim": "#bec6e0",
+                        "surface-tint": "#565e74",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#7c839b",
+                        "surface-variant": "#d3e4fe",
+                        "tertiary": "#000000",
+                        "on-background": "#0b1c30",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "surface-dim": "#cbdbf5",
+                        "inverse-surface": "#213145",
+                        "on-tertiary-container": "#009668",
+                        "primary-container": "#131b2e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "sidebar-width": "260px",
+                        "card-padding": "20px",
+                        "container-margin": "24px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "data-metric": ["Inter"],
+                        "label-md": ["JetBrains Mono"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "display-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "data-metric": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col pt-16 pb-20">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface font-headline-sm text-headline-sm flex justify-between items-center w-full px-container-margin h-16 fixed top-0 w-full z-50 border-b border-outline-variant dark:border-outline text-primary dark:text-primary-fixed">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary dark:text-on-primary-fixed hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-200 cursor-pointer rounded-full p-2" data-icon="sensors">sensors</span>
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">UrbanSense AI</span>
+</div>
+<button class="font-label-md text-label-md flex items-center gap-2 bg-primary text-on-primary px-4 py-2 rounded-full hover:bg-opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">photo_camera</span>
+            Live Camera
+        </button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col relative w-full h-full overflow-hidden">
+<!-- Live Map Area (Simplified for Mobile) -->
+<div class="relative w-full h-1/2 flex-shrink-0 bg-surface-container-lowest border-b border-outline-variant">
+<div class="w-full h-full bg-cover bg-center" data-alt="A highly detailed overhead satellite view of a modern urban city block with a light mode interface overlay. The streets are clean, with subtle glowing blue and orange data markers indicating transit routes and bus locations. The aesthetic is crisp, professional, and data-driven." data-location="Nagpur" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCXh0QPVNdxWCpxf5wEDec_pDiZYeJjbhnRXuB_F36Qd7HEJT5VVi64qYXLF3PyEz_V42VHh0-LCPB1aFCGjoB6Ph2Fvx34eZL_ZQDYv8po5-7OqlgU_2woSECit1b2yyml62ME9oJTJ20NcTGo_by9HL-9b6neH9VP-x5KDCVTC1bNQ937AzO8nfhpjiOipIJ0AxAas2UTfDVGWvDK2O0FztAzy4CmFIu532rihxprb6mgoIqYzUrriw')"></div>
+<!-- Map Controls Overlay -->
+<div class="absolute bottom-4 right-4 flex flex-col gap-2">
+<button class="w-8 h-8 bg-surface border border-outline-variant rounded shadow-sm flex items-center justify-center text-on-surface hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+<button class="w-8 h-8 bg-surface border border-outline-variant rounded shadow-sm flex items-center justify-center text-on-surface hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+<button class="w-8 h-8 bg-surface border border-outline-variant rounded shadow-sm flex items-center justify-center text-on-surface hover:bg-surface-container-low transition-colors mt-2">
+<span class="material-symbols-outlined text-[20px]">layers</span>
+</button>
+</div>
+<!-- Floating Search Bar -->
+<div class="absolute top-4 left-4 right-4">
+<div class="bg-surface h-10 rounded-lg shadow-sm border border-outline-variant flex items-center px-3 focus-within:border-primary focus-within:shadow-[0_0_0_2px_rgba(0,0,0,0.1)] transition-all">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+<input class="w-full bg-transparent border-none focus:ring-0 font-body-md text-on-surface outline-none" placeholder="Search locations, buses..." type="text"/>
+</div>
+</div>
+</div>
+<!-- Scrollable Feed: KPIs & AI Detections -->
+<div class="flex-1 overflow-y-auto px-4 py-6 bg-background space-y-6">
+<!-- KPI Top Bar (Grid) -->
+<div class="grid grid-cols-2 gap-4">
+<!-- Fleet Online KPI -->
+<div class="bg-surface border border-outline-variant rounded-lg p-[20px] flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Fleet Online</span>
+<div class="flex items-end gap-2">
+<span class="font-data-metric text-data-metric text-on-surface">342</span>
+<span class="font-body-md text-body-md text-on-surface-variant mb-1">/ 400</span>
+</div>
+<div class="flex items-center gap-1 mt-2 text-tertiary-container">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span class="font-label-md text-label-md">+5.2%</span>
+</div>
+</div>
+<!-- Active Alerts KPI -->
+<div class="bg-surface border border-outline-variant rounded-lg p-[20px] flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Active Alerts</span>
+<div class="flex items-end gap-2">
+<span class="font-data-metric text-data-metric text-error">12</span>
+</div>
+<div class="flex items-center gap-1 mt-2 text-error">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+<span class="font-label-md text-label-md">Requires Attn</span>
+</div>
+</div>
+</div>
+<!-- Live AI Detections Feed -->
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-4">Live AI Detections</h2>
+<div class="space-y-4">
+<!-- Detection Card 1: Traffic Violation -->
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col">
+<div class="relative h-32 w-full">
+<img class="w-full h-full object-cover" data-alt="A clean, high-resolution traffic camera snapshot captured during the daytime. The image clearly shows a red sedan illegally crossing an intersection. A semi-transparent red bounding box highlights the vehicle, and modern UI telemetry data overlays the corners. The overall aesthetic is forensic, bright, and analytical." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA71AQYVp1eMKyHhyFCEjshzOU97ZeMiVEA39jSjB9tj1RZXv9Ku-A_vjoY7lLJTSPWUD8N4zvD9diad9x9tIbHOMRIKaM9EZfFMocbyN-06VSCOISuAGdQKvjTTq-Tk6RjNUVjtrtUVgS67BU-ozLtX2in2afuqGvpgeu8RV4x6SwBPkfoKiU-6qrfn4C_T7ZRKIEd3u3IoZTDc6Fff_Gkgyt7_JxQXp8gwtrLCaIi-0kY16aWNZlgwg"/>
+<!-- Status Badge Over Image -->
+<div class="absolute top-2 right-2 bg-error bg-opacity-10 border border-error border-opacity-30 px-2 py-1 rounded backdrop-blur-sm">
+<span class="font-label-md text-label-md text-error">CRITICAL</span>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-sm text-headline-sm text-on-surface text-[16px] leading-[22px]">Red Light Violation</h3>
+<span class="font-label-md text-label-md text-on-surface-variant">Just now</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-3">Cam-Intersection-04 detected unauthorized crossing.</p>
+<button class="font-label-md text-label-md text-primary hover:bg-surface-container-low px-3 py-1.5 rounded transition-colors w-fit self-start">Review Footage</button>
+</div>
+</div>
+<!-- Detection Card 2: Pothole -->
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col">
+<div class="relative h-32 w-full">
+<img class="w-full h-full object-cover" data-alt="A crisp, daytime street-level camera snapshot showing a section of urban asphalt. The image clearly captures a significant pothole in the road surface. An amber-colored digital bounding box surrounds the pothole, indicating an AI detection event. The style is clear, objective, and utility-focused." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdGMxG01TSxStnsnx305hP5pD8X04CgtGO6xLQiA-CIauqs7MUlGKdsnvH6K_oYHg9sjiBsZ1VNuu6IjWX0gljEzQqpj4z3VY_xiHg7tipu9xNJkLEOouQeXBbbBILzwkC6Jl80jsywEMmMeRZ6SF4QUyehjNJg_x0-fDEFvSz-bXUJ2J62e5ToLUEgB_mQTLpv5u8HHb7zLUB4Fl3DIw-WFjdfyjvgTlqbtf5NvcCvOhllepujx3xaA"/>
+<!-- Status Badge Over Image -->
+<div class="absolute top-2 right-2 bg-secondary-container bg-opacity-10 border border-secondary-container border-opacity-30 px-2 py-1 rounded backdrop-blur-sm">
+<span class="font-label-md text-label-md text-secondary-container">MAJOR</span>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-sm text-headline-sm text-on-surface text-[16px] leading-[22px]">Road Anomaly Detected</h3>
+<span class="font-label-md text-label-md text-on-surface-variant">4m ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-3">Bus-342 dashcam identified severe pothole on Main St.</p>
+<button class="font-label-md text-label-md text-primary hover:bg-surface-container-low px-3 py-1.5 rounded transition-colors w-fit self-start">Log Issue</button>
+</div>
+</div>
+<!-- Detection Card 3: Traffic Congestion -->
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col">
+<div class="relative h-32 w-full">
+<img class="w-full h-full object-cover" data-alt="An elevated traffic camera view of a modern urban highway during early evening. The lanes are moderately packed with vehicles, showing the onset of traffic congestion. A slate-grey bounding box highlights a cluster of slow-moving cars. The lighting is crisp, and the interface overlay is minimal and professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDn9h7Z_HDA0dWHq08XnlfV1El_RUbJ3YdkrpOr3TLTP-IPCb77S9j4-Gfn3ByPfwdyOUb0n79HtrwjgaqnX4VhJ5eE6nCD0iX6rTdmgqZ7UkAi1PBgnlK8Ehaju2CUglH0y4ItBtMposx6CIltOUXdbiMs2SJ9SlZ6U5IQhPhJKLMyieiU1Fc4mQ6LFcLdcIvTRBPoFXAJFaQvY7XcG0pKN2ZUqJ-eBlJ4zQk9esrvfNOP-UJYIm0HzA"/>
+<!-- Status Badge Over Image -->
+<div class="absolute top-2 right-2 bg-outline bg-opacity-10 border border-outline border-opacity-30 px-2 py-1 rounded backdrop-blur-sm">
+<span class="font-label-md text-label-md text-outline">INFO</span>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-sm text-headline-sm text-on-surface text-[16px] leading-[22px]">Traffic Slowdown</h3>
+<span class="font-label-md text-label-md text-on-surface-variant">12m ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Average speed dropped below 15km/h on Highway 4.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Padding for Nav Bar -->
+<div class="h-6 w-full"></div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="font-label-md text-label-md fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 bg-surface dark:bg-surface border-t border-outline-variant dark:border-outline shadow-sm z-50">
+<!-- Dashboard (Active) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary-fixed text-on-secondary-container dark:text-on-secondary-fixed rounded-full p-2 scale-95 transition-transform duration-150 hover:bg-surface-container-high dark:hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="sr-only">Dashboard</span>
+</a>
+<!-- Buses -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 scale-95 transition-transform duration-150 hover:bg-surface-container-high dark:hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined" data-icon="directions_bus">directions_bus</span>
+<span class="sr-only">Fleet</span>
+</a>
+<!-- Roads -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 scale-95 transition-transform duration-150 hover:bg-surface-container-high dark:hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined" data-icon="edit_road">edit_road</span>
+<span class="sr-only">Roads</span>
+</a>
+<!-- Analytics -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 scale-95 transition-transform duration-150 hover:bg-surface-container-high dark:hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="sr-only">Analytics</span>
+</a>
+<!-- Emergency -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 scale-95 transition-transform duration-150 hover:bg-surface-container-high dark:hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined" data-icon="emergency">emergency</span>
+<span class="sr-only">Emergency</span>
+</a>
+</nav>
+</body></html>

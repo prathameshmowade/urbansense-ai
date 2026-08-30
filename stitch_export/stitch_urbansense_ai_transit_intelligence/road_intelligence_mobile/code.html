@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Road Intelligence Feed</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-on-surface": "#eaf1ff",
+                      "outline": "#76777d",
+                      "surface-container-highest": "#d3e4fe",
+                      "surface-container-high": "#dce9ff",
+                      "secondary-fixed-dim": "#ffb690",
+                      "primary-fixed": "#dae2fd",
+                      "on-secondary-fixed": "#341100",
+                      "secondary-fixed": "#ffdbca",
+                      "inverse-primary": "#bec6e0",
+                      "on-tertiary-fixed": "#002113",
+                      "tertiary-fixed": "#6ffbbe",
+                      "secondary-container": "#fd761a",
+                      "on-tertiary-fixed-variant": "#005236",
+                      "on-primary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "background": "#f8f9ff",
+                      "on-surface": "#0b1c30",
+                      "surface-container-low": "#eff4ff",
+                      "tertiary-fixed-dim": "#4edea3",
+                      "error": "#ba1a1a",
+                      "primary": "#000000",
+                      "on-primary-fixed": "#131b2e",
+                      "surface": "#f8f9ff",
+                      "surface-container": "#e5eeff",
+                      "on-secondary-container": "#5c2400",
+                      "on-tertiary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "on-surface-variant": "#45464d",
+                      "secondary": "#9d4300",
+                      "outline-variant": "#c6c6cd",
+                      "on-secondary-fixed-variant": "#783200",
+                      "on-error-container": "#93000a",
+                      "tertiary-container": "#002113",
+                      "surface-bright": "#f8f9ff",
+                      "primary-fixed-dim": "#bec6e0",
+                      "surface-tint": "#565e74",
+                      "on-secondary": "#ffffff",
+                      "on-primary-container": "#7c839b",
+                      "surface-variant": "#d3e4fe",
+                      "tertiary": "#000000",
+                      "on-background": "#0b1c30",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-fixed-variant": "#3f465c",
+                      "surface-dim": "#cbdbf5",
+                      "inverse-surface": "#213145",
+                      "on-tertiary-container": "#009668",
+                      "primary-container": "#131b2e"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "base": "4px",
+                      "sidebar-width": "260px",
+                      "card-padding": "20px",
+                      "container-margin": "24px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "headline-sm": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "data-metric": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "JetBrains Mono"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-sm": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "36px",
+                              {
+                                      "lineHeight": "44px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "data-metric": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md overflow-x-hidden md:hidden pb-[72px]">
+<!-- TopAppBar JSON Component -->
+<header class="bg-surface dark:bg-surface font-headline-sm text-headline-sm docked full-width top-0 border-b border-outline-variant dark:border-outline flex justify-between items-center w-full px-container-margin h-16 sticky z-40">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed" data-icon="sensors">sensors</span>
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">UrbanSense AI</span>
+</div>
+<button class="flex items-center gap-2 hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-200 p-2 rounded-lg text-primary dark:text-on-primary-fixed">
+<span class="font-label-md text-label-md uppercase">Live Camera</span>
+</button>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 w-full px-4 pt-6 pb-24 flex flex-col gap-6 max-w-[600px] mx-auto">
+<!-- Page Title & Metrics Overview -->
+<section class="flex flex-col gap-4">
+<div class="flex flex-col gap-1">
+<h1 class="font-headline-md text-headline-md text-on-surface">Road Intelligence</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Live AI detections from municipal transit network.</p>
+</div>
+<!-- Bento-style Metrics Grid -->
+<div class="grid grid-cols-2 gap-4">
+<!-- Total Detections Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-card-padding flex flex-col gap-2">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Total Detections</span>
+<div class="flex items-end gap-2">
+<span class="font-data-metric text-data-metric text-on-surface">1,492</span>
+<span class="font-body-md text-body-md text-tertiary-container flex items-center mb-1">
+<span class="material-symbols-outlined text-[16px]">arrow_upward</span> 12%
+                        </span>
+</div>
+</div>
+<!-- Critical Alerts Card -->
+<div class="bg-error-container border border-error/20 rounded-xl p-card-padding flex flex-col gap-2 relative overflow-hidden">
+<span class="font-label-md text-label-md text-on-error-container uppercase tracking-wider relative z-10">Critical Alerts</span>
+<div class="flex items-end gap-2 relative z-10">
+<span class="font-data-metric text-data-metric text-on-error-container">84</span>
+<span class="font-body-md text-body-md text-on-error-container flex items-center mb-1">
+                            Requires Action
+                        </span>
+</div>
+<!-- Decorative element for critical card -->
+<div class="absolute -right-4 -bottom-4 w-16 h-16 bg-error/10 rounded-full blur-xl"></div>
+</div>
+</div>
+<!-- Filter Pills -->
+<div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar mt-2">
+<button class="bg-primary-container text-on-primary-container px-4 py-1.5 rounded-full font-label-md text-label-md flex-shrink-0 border border-transparent">All Detections</button>
+<button class="bg-surface-container-lowest text-on-surface-variant px-4 py-1.5 rounded-full font-label-md text-label-md flex-shrink-0 border border-outline-variant hover:bg-surface-container-low transition-colors">Potholes</button>
+<button class="bg-surface-container-lowest text-on-surface-variant px-4 py-1.5 rounded-full font-label-md text-label-md flex-shrink-0 border border-outline-variant hover:bg-surface-container-low transition-colors">Cracks</button>
+<button class="bg-surface-container-lowest text-on-surface-variant px-4 py-1.5 rounded-full font-label-md text-label-md flex-shrink-0 border border-outline-variant hover:bg-surface-container-low transition-colors">Waterlogging</button>
+</div>
+</section>
+<!-- Vertical Feed of Detections -->
+<section class="flex flex-col gap-4">
+<h2 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider border-b border-outline-variant pb-2">High-Confidence Feed</h2>
+<!-- Feed Card 1: Critical Pothole -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden flex flex-col shadow-sm transition-transform active:scale-[0.98]">
+<div class="relative h-[180px] w-full bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="A high-resolution, gritty urban photo of a severe pothole in the middle of an asphalt road, captured from a dashboard camera perspective. The image features a technical overlay with bounding boxes highlighting the pothole in orange, against a stark, light-mode gray and white cityscape background. The lighting is overcast, emphasizing the texture of the damaged road." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxcm3Us08QqRJ40w_88iRKEXRr459_0YNz9oR3oICQtBZ6_emQ47drh0TRiVkW8XYTrxTPmAON4v000psYxBhQLKrQDz508mTJ3ls9aYqQhCbsv6varNvfuyD5DNqJHk0fFdz6jUtNkd6Q4u5jeXB8eTKNqqjbCiCftz_mqjCKw-iYdfQ0MUTCfwaTme9PkvWL3t3L3aDGePomRbe1MKXAiaPzPAt0LbrDhL7z6PdoVBzJ0oNUYexUWg"/>
+<div class="absolute top-3 left-3 bg-secondary/10 border border-secondary/30 backdrop-blur-sm px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+<div class="w-2 h-2 rounded-full bg-secondary animate-pulse"></div>
+<span class="font-label-md text-label-md text-secondary uppercase font-bold">Critical</span>
+</div>
+<div class="absolute bottom-3 right-3 bg-inverse-surface/90 text-inverse-on-surface px-2.5 py-1 rounded-md flex items-center gap-1.5 backdrop-blur-md">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+<span class="font-label-md text-label-md">98% Conf</span>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-3">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Severe Pothole Cluster</h3>
+<span class="font-body-md text-body-md text-on-surface-variant">Northbound Ave, Lane 2</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant text-right">Just now</span>
+</div>
+<div class="flex items-center gap-4 border-t border-outline-variant/50 pt-3 mt-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">directions_bus</span>
+<span class="font-label-md text-label-md text-on-surface">Bus ID: MT-402</span>
+</div>
+<div class="w-[1px] h-4 bg-outline-variant/50"></div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">speed</span>
+<span class="font-label-md text-label-md text-on-surface">45 mph</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Feed Card 2: Major Waterlogging -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden flex flex-col shadow-sm transition-transform active:scale-[0.98]">
+<div class="relative h-[180px] w-full bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="A clinical, high-contrast dashboard camera view showing significant water accumulation on a city street near a curb. The scene is rendered in a bright, modern aesthetic with stark white and gray tones. A semi-transparent blue technical bounding box highlights the flooded area, indicating AI detection. The lighting suggests early morning, emphasizing the reflection on the water." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUDhH1OnMXoy77INUcZYpHmq1P3YYsgjxUNGpEzN0dgw6In3tBwtDgL3eyFLUxRpAdZ27DSuMix-Q8T1h4AS-NktOnhebhDLeH7i8PqfeU46u947u1iW927X2YvBmPixiy-LHWay87GB9zCiWHnd5A9o3NCWjvXVQnxt9_4qof2H02NTBZ3JR1ZXhNQD7OZkZOGRbackLWptA6QIi2z878c2VeZJs3Kv7UVCnz52PHf0crkOTfoXgLSQ"/>
+<div class="absolute top-3 left-3 bg-[#eab308]/10 border border-[#eab308]/30 backdrop-blur-sm px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+<div class="w-2 h-2 rounded-full bg-[#eab308]"></div>
+<span class="font-label-md text-label-md text-[#ca8a04] uppercase font-bold">Major</span>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-3">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Curb Waterlogging</h3>
+<span class="font-body-md text-body-md text-on-surface-variant">East 4th St Intersection</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant text-right">4m ago</span>
+</div>
+<div class="flex items-center gap-4 border-t border-outline-variant/50 pt-3 mt-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">directions_bus</span>
+<span class="font-label-md text-label-md text-on-surface">Bus ID: MT-118</span>
+</div>
+<div class="w-[1px] h-4 bg-outline-variant/50"></div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">straighten</span>
+<span class="font-label-md text-label-md text-on-surface">~4 sq ft</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Feed Card 3: Info Surface Crack -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden flex flex-col shadow-sm transition-transform active:scale-[0.98]">
+<div class="relative h-[180px] w-full bg-surface-container-low">
+<div class="w-full h-full bg-cover bg-center" data-alt="A clean, minimalist street-level view capturing linear cracks along the asphalt surface. The image is bright and highly detailed, reflecting a professional data-first aesthetic. Thin, precise green lines trace the cracks, representing AI confidence mapping, set against the light gray and white tones of the road surface under bright daylight." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCgP04XUDaZfYC1oE38lzxWssIlYEmhZ5HP-yY508NuY0qUf-24gnTJhS_Nf7tpSuWxYYPYCW3EiGfl8S59sJAT8x8eVNt2CVlcJ-NevBFAcSEgl8ayNO8vnFFSrYpm6eX8evWzJ1plo9j0GOmuE0kGGX6YdoK4Za65p3x-EPFx27anxRdk2DrPibIPYUC6MSJ66ZuFf782bqJG5iieWmLH988MH7dJhsjyShG1TrxcpLgSfsP8WpPFVA')"></div>
+<div class="absolute top-3 left-3 bg-surface-tint/10 border border-surface-tint/30 backdrop-blur-sm px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+<div class="w-2 h-2 rounded-full bg-surface-tint"></div>
+<span class="font-label-md text-label-md text-surface-tint uppercase font-bold">Info</span>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-3">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Linear Surface Cracking</h3>
+<span class="font-body-md text-body-md text-on-surface-variant">West Blvd, Right Lane</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant text-right">12m ago</span>
+</div>
+<div class="flex items-center gap-4 border-t border-outline-variant/50 pt-3 mt-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">directions_bus</span>
+<span class="font-label-md text-label-md text-on-surface">Bus ID: MT-805</span>
+</div>
+</div>
+</div>
+</article>
+<button class="w-full py-4 border border-outline-variant rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors mt-2">
+                LOAD MORE DETECTIONS
+            </button>
+</section>
+</main>
+<!-- BottomNavBar JSON Component -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 bg-surface dark:bg-surface border-t border-outline-variant dark:border-outline shadow-sm z-50 h-[72px]">
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest scale-95 transition-transform duration-150 rounded-full w-16 h-14">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-[10px] mt-1 hidden">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest scale-95 transition-transform duration-150 rounded-full w-16 h-14">
+<span class="material-symbols-outlined" data-icon="directions_bus">directions_bus</span>
+</button>
+<!-- Active Tab: edit_road aligns best with Road Intelligence -->
+<button class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary-fixed text-on-secondary-container dark:text-on-secondary-fixed rounded-full p-2 scale-95 transition-transform duration-150 w-16 h-14 shadow-sm">
+<span class="material-symbols-outlined" data-icon="edit_road" data-weight="fill">edit_road</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest scale-95 transition-transform duration-150 rounded-full w-16 h-14">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest scale-95 transition-transform duration-150 rounded-full w-16 h-14">
+<span class="material-symbols-outlined" data-icon="emergency">emergency</span>
+</button>
+</nav>
+<script>
+        // Simple micro-interaction for filter pills
+        document.querySelectorAll('button').forEach(btn => {
+            if(btn.textContent === 'All Detections' || btn.textContent === 'Potholes' || btn.textContent === 'Cracks' || btn.textContent === 'Waterlogging') {
+                btn.addEventListener('click', function() {
+                    // Reset all
+                    document.querySelectorAll('button').forEach(b => {
+                         if(b.textContent === 'All Detections' || b.textContent === 'Potholes' || b.textContent === 'Cracks' || b.textContent === 'Waterlogging') {
+                             b.className = "bg-surface-container-lowest text-on-surface-variant px-4 py-1.5 rounded-full font-label-md text-label-md flex-shrink-0 border border-outline-variant hover:bg-surface-container-low transition-colors";
+                         }
+                    });
+                    // Set active
+                    this.className = "bg-primary-container text-on-primary-container px-4 py-1.5 rounded-full font-label-md text-label-md flex-shrink-0 border border-transparent";
+                });
+            }
+        });
+    </script>
+</body></html>

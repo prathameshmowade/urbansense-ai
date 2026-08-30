@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Coverage Analysis - UrbanSense AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "inverse-on-surface": "#eaf1ff",
+                            "outline": "#76777d",
+                            "surface-container-highest": "#d3e4fe",
+                            "surface-container-high": "#dce9ff",
+                            "secondary-fixed-dim": "#ffb690",
+                            "primary-fixed": "#dae2fd",
+                            "on-secondary-fixed": "#341100",
+                            "secondary-fixed": "#ffdbca",
+                            "inverse-primary": "#bec6e0",
+                            "on-tertiary-fixed": "#002113",
+                            "tertiary-fixed": "#6ffbbe",
+                            "secondary-container": "#fd761a",
+                            "on-tertiary-fixed-variant": "#005236",
+                            "on-primary": "#ffffff",
+                            "error-container": "#ffdad6",
+                            "background": "#f8f9ff",
+                            "on-surface": "#0b1c30",
+                            "surface-container-low": "#eff4ff",
+                            "tertiary-fixed-dim": "#4edea3",
+                            "error": "#ba1a1a",
+                            "primary": "#000000",
+                            "on-primary-fixed": "#131b2e",
+                            "surface": "#f8f9ff",
+                            "surface-container": "#e5eeff",
+                            "on-secondary-container": "#5c2400",
+                            "on-tertiary": "#ffffff",
+                            "on-error": "#ffffff",
+                            "on-surface-variant": "#45464d",
+                            "secondary": "#9d4300",
+                            "outline-variant": "#c6c6cd",
+                            "on-secondary-fixed-variant": "#783200",
+                            "on-error-container": "#93000a",
+                            "tertiary-container": "#002113",
+                            "surface-bright": "#f8f9ff",
+                            "primary-fixed-dim": "#bec6e0",
+                            "surface-tint": "#565e74",
+                            "on-secondary": "#ffffff",
+                            "on-primary-container": "#7c839b",
+                            "surface-variant": "#d3e4fe",
+                            "tertiary": "#000000",
+                            "on-background": "#0b1c30",
+                            "surface-container-lowest": "#ffffff",
+                            "on-primary-fixed-variant": "#3f465c",
+                            "surface-dim": "#cbdbf5",
+                            "inverse-surface": "#213145",
+                            "on-tertiary-container": "#009668",
+                            "primary-container": "#131b2e"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.125rem",
+                            "lg": "0.25rem",
+                            "xl": "0.5rem",
+                            "full": "0.75rem"
+                    },
+                    "spacing": {
+                            "base": "4px",
+                            "sidebar-width": "260px",
+                            "card-padding": "20px",
+                            "container-margin": "24px",
+                            "gutter": "16px"
+                    },
+                    "fontFamily": {
+                            "body-lg": ["Inter"],
+                            "body-md": ["Inter"],
+                            "headline-sm": ["Inter"],
+                            "display-lg": ["Inter"],
+                            "data-metric": ["Inter"],
+                            "label-md": ["JetBrains Mono"],
+                            "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                            "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                            "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                            "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                            "display-lg": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                            "data-metric": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                            "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                            "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[style*="FILL' 1"] {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Custom progress bar animation */
+        @keyframes fillProgress {
+            from { width: 0; }
+        }
+        .animate-progress {
+            animation: fillProgress 1.5s ease-out forwards;
+        }
+
+        /* Gauge animation */
+        @keyframes rotateGauge {
+            from { transform: rotate(-90deg); }
+        }
+        .gauge-circle {
+            transition: stroke-dasharray 1.5s ease-out;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background antialiased pb-20 selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface border-b border-outline-variant dark:border-outline flex justify-between items-center w-full px-container-margin h-16 fixed top-0 w-full z-40">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed text-[24px]">sensors</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed tracking-tight">UrbanSense AI</h1>
+</div>
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-200">
+<span class="font-label-md text-label-md text-primary dark:text-primary-fixed">Live Camera</span>
+</button>
+</header>
+<!-- Main Content Area -->
+<main class="pt-20 px-4 pb-24 max-w-md mx-auto space-y-6">
+<!-- Header Section -->
+<div class="space-y-1">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Coverage Analysis</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Nagpur Metropolitan Area</p>
+</div>
+<!-- Gauge Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-card-padding flex flex-col items-center justify-center relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-b from-surface-container-low/50 to-transparent pointer-events-none"></div>
+<h3 class="font-label-md text-label-md text-on-surface-variant mb-6 uppercase tracking-wider relative z-10">Citywide Sensor Coverage</h3>
+<!-- SVG Gauge -->
+<div class="relative w-48 h-48 mb-2 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<!-- Background Circle -->
+<circle class="text-surface-container-high" cx="50" cy="50" fill="none" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-linecap="round" stroke-width="8"></circle>
+<!-- Foreground Circle -->
+<circle class="text-secondary gauge-circle" cx="50" cy="50" fill="none" r="40" stroke="currentColor" stroke-dasharray="188.4 251.2" stroke-dashoffset="0" stroke-linecap="round" stroke-width="8" style="stroke-dasharray: 175.84 251.2;"></circle>
+</svg>
+<!-- Center Text -->
+<div class="absolute flex flex-col items-center justify-center">
+<span class="font-data-metric text-data-metric text-primary">72<span class="text-xl">%</span></span>
+<span class="font-label-md text-label-md text-tertiary-container mt-1 bg-tertiary-fixed/30 px-2 py-0.5 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +3.4%
+                    </span>
+</div>
+</div>
+<div class="w-full flex justify-between text-on-surface-variant mt-4 relative z-10 px-4 border-t border-outline-variant/30 pt-4">
+<div class="text-center">
+<div class="font-label-md text-label-md opacity-70">Target</div>
+<div class="font-body-md text-body-md font-semibold text-on-surface">85%</div>
+</div>
+<div class="text-center border-l border-outline-variant/30 pl-4">
+<div class="font-label-md text-label-md opacity-70">Active Nodes</div>
+<div class="font-body-md text-body-md font-semibold text-on-surface">1,248</div>
+</div>
+</div>
+</div>
+<!-- Heatmap Section -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden flex flex-col h-[300px]">
+<div class="px-4 py-3 border-b border-outline-variant flex justify-between items-center bg-surface-bright">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Live Density Map</h3>
+<button class="p-1.5 hover:bg-surface-container rounded-md transition-colors">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">filter_list</span>
+</button>
+</div>
+<!-- Map Container (Placeholder for visual) -->
+<div class="flex-1 relative bg-surface-container-low" data-alt="A highly detailed, minimalist vector style heatmap of the city of Nagpur. The aesthetic is clean, professional, and data-driven, utilizing a stark white and light gray base map. Areas of high sensor coverage are highlighted in intense, precise geometric overlays of fiery orange and deep red, contrasting sharply against the pristine light background. The overall look resembles a modern corporate dashboard meant for municipal planning, prioritizing clarity and stark contrast over photorealism." data-location="Nagpur" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDG9lYbcRnBxxhGdzs4SgqZ3cpQPqkhS4hSD_PpS-EZ2pUEX2yrhTB944840g5RctpW2h47d4cdXT2Fa5JGBe2o6jVzr4L1h2eAkmDUYy-iio1NUcf28RwvVFYGSxt0ZKme4QKrCzWHgiKq7s9me5Pp9Xm7Jw0nPZRtdDDRXbjeWQA3n5MbxGEysxMAyG9yi3SWM5EMcVhYZ3JwUK83MvHTKQLF0h8boj7gcaU9seFnGMXDeX4Aulcljg')">
+<!-- Map UI Overlays -->
+<div class="absolute right-2 top-2 flex flex-col gap-1">
+<button class="w-8 h-8 bg-surface-container-lowest border border-outline-variant rounded shadow-sm flex items-center justify-center hover:bg-surface-container-high transition-colors text-on-surface">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+<button class="w-8 h-8 bg-surface-container-lowest border border-outline-variant rounded shadow-sm flex items-center justify-center hover:bg-surface-container-high transition-colors text-on-surface">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+</div>
+<div class="absolute bottom-2 left-2 right-2 bg-surface-container-lowest/90 backdrop-blur-sm border border-outline-variant rounded-lg p-2 text-xs flex justify-between items-center shadow-sm">
+<span class="font-label-md text-on-surface-variant">Density</span>
+<div class="w-32 h-2 rounded bg-gradient-to-r from-surface-container to-secondary"></div>
+</div>
+</div>
+</div>
+<!-- Route Coverage Ranking -->
+<div class="space-y-3">
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">format_list_numbered</span>
+                Route Coverage
+            </h3>
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 hover:border-primary transition-colors duration-200">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-body-md text-body-md font-semibold text-on-surface">Wardha Road Corridor</h4>
+<p class="font-label-md text-label-md text-on-surface-variant mt-0.5">High Priority Transit</p>
+</div>
+<span class="font-body-md text-body-md font-bold text-secondary">94%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full animate-progress" style="width: 94%;"></div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 hover:border-primary transition-colors duration-200">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-body-md text-body-md font-semibold text-on-surface">Inner Ring Road</h4>
+<p class="font-label-md text-label-md text-on-surface-variant mt-0.5">Commercial Zone</p>
+</div>
+<span class="font-body-md text-body-md font-bold text-secondary">82%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full animate-progress" style="width: 82%;"></div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 hover:border-primary transition-colors duration-200">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-body-md text-body-md font-semibold text-on-surface">Central Avenue</h4>
+<p class="font-label-md text-label-md text-on-surface-variant mt-0.5">Mixed Use</p>
+</div>
+<span class="font-body-md text-body-md font-bold text-outline">65%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-outline h-full rounded-full animate-progress" style="width: 65%;"></div>
+</div>
+<div class="mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-error">warning</span>
+<span class="font-label-md text-label-md text-error">Requires attention</span>
+</div>
+</div>
+<button class="w-full py-3 mt-2 border border-outline-variant rounded-lg font-label-md text-label-md text-on-surface font-semibold hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2">
+                View All Routes <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 bg-surface dark:bg-surface border-t border-outline-variant dark:border-outline shadow-sm z-50 md:hidden">
+<!-- Inactive -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest scale-95 transition-transform duration-150 rounded-xl" href="#">
+<span class="material-symbols-outlined text-[24px]">dashboard</span>
+</a>
+<!-- Inactive -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest scale-95 transition-transform duration-150 rounded-xl" href="#">
+<span class="material-symbols-outlined text-[24px]">directions_bus</span>
+</a>
+<!-- Inactive -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest scale-95 transition-transform duration-150 rounded-xl" href="#">
+<span class="material-symbols-outlined text-[24px]">edit_road</span>
+</a>
+<!-- Active Tab (Analytics) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary-fixed text-on-secondary-container dark:text-on-secondary-fixed rounded-full p-2 scale-95 transition-transform duration-150 shadow-sm" href="#">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">analytics</span>
+</a>
+<!-- Inactive -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest scale-95 transition-transform duration-150 rounded-xl" href="#">
+<span class="material-symbols-outlined text-[24px]">emergency</span>
+</a>
+</nav>
+</body></html>

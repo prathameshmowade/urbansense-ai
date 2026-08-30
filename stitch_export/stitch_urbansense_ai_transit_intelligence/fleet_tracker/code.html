@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Fleet Tracker - UrbanSense AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#ffffff",
+                      "surface": "#f8f9ff",
+                      "on-secondary-container": "#5c2400",
+                      "on-background": "#0b1c30",
+                      "tertiary": "#000000",
+                      "primary-container": "#131b2e",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#c6c6cd",
+                      "on-primary-fixed-variant": "#3f465c",
+                      "on-secondary-fixed": "#341100",
+                      "primary": "#000000",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-surface-variant": "#45464d",
+                      "on-secondary-fixed-variant": "#783200",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-high": "#dce9ff",
+                      "on-tertiary-container": "#009668",
+                      "on-primary": "#ffffff",
+                      "primary-fixed": "#dae2fd",
+                      "surface-tint": "#565e74",
+                      "inverse-primary": "#bec6e0",
+                      "tertiary-fixed-dim": "#4edea3",
+                      "surface-container": "#e5eeff",
+                      "tertiary-fixed": "#6ffbbe",
+                      "background": "#f8f9ff",
+                      "outline": "#76777d",
+                      "on-primary-fixed": "#131b2e",
+                      "tertiary-container": "#002113",
+                      "secondary-container": "#fd761a",
+                      "error": "#ba1a1a",
+                      "surface-variant": "#d3e4fe",
+                      "secondary": "#9d4300",
+                      "surface-dim": "#cbdbf5",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-container": "#7c839b",
+                      "secondary-fixed": "#ffdbca",
+                      "primary-fixed-dim": "#bec6e0",
+                      "surface-container-highest": "#d3e4fe",
+                      "on-error-container": "#93000a",
+                      "on-error": "#ffffff",
+                      "secondary-fixed-dim": "#ffb690",
+                      "inverse-surface": "#213145",
+                      "surface-bright": "#f8f9ff",
+                      "surface-container-low": "#eff4ff",
+                      "on-tertiary-fixed": "#002113",
+                      "on-surface": "#0b1c30",
+                      "on-tertiary-fixed-variant": "#005236"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "base": "4px",
+                      "card-padding": "20px",
+                      "container-margin": "24px",
+                      "sidebar-width": "260px"
+              },
+              "fontFamily": {
+                      "data-metric": ["Inter"],
+                      "body-md": ["Inter"],
+                      "label-md": ["JetBrains Mono"],
+                      "body-lg": ["Inter"],
+                      "headline-sm": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "headline-md": ["Inter"]
+              },
+              "fontSize": {
+                      "data-metric": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "display-lg": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        /* Custom scrollbar for minimalist look */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c6c6cd; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #76777d; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md overflow-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-260px)] h-16 bg-surface border-b border-outline-variant flex justify-between items-center px-gutter z-50">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md font-bold text-on-background">UrbanSense AI</span>
+<nav class="flex items-center gap-6 ml-8">
+<a class="text-primary border-b-2 border-primary pb-1 font-body-md text-body-md hover:text-primary transition-opacity duration-200" href="#">Nagpur</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative focus-within:ring-2 focus-within:ring-primary rounded-full p-2 hover:bg-surface-variant transition-opacity duration-200 cursor-pointer">
+<span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
+</div>
+<div class="relative focus-within:ring-2 focus-within:ring-primary rounded-full p-2 hover:bg-surface-variant transition-opacity duration-200 cursor-pointer">
+<span class="material-symbols-outlined text-primary" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full w-sidebar-width bg-primary-container border-r border-outline-variant flex flex-col p-4 z-50 shadow-none">
+<div class="flex items-center gap-3 mb-8 px-2 mt-2">
+<div class="w-10 h-10 bg-surface rounded-lg flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-primary-container" data-icon="memory">memory</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-on-primary">UrbanSense AI</h1>
+<p class="font-label-md text-label-md text-on-primary-container">Nagpur PM-eBus</p>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 rounded-lg cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Command Center</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 bg-secondary-container text-on-secondary-container font-bold rounded-lg cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined icon-fill" data-icon="directions_bus">directions_bus</span>
+<span class="font-body-md text-body-md">Fleet Tracker</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 rounded-lg cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+<span class="font-body-md text-body-md">Road Intelligence</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 rounded-lg cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-body-md text-body-md">Traffic Analytics</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 rounded-lg cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="emergency">emergency</span>
+<span class="font-body-md text-body-md">Incident Manager</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 rounded-lg cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="memory">memory</span>
+<span class="font-body-md text-body-md">Edge Monitor</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 rounded-lg cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-body-md text-body-md">Coverage Analysis</span>
+</a>
+</li>
+</ul>
+</div>
+<div class="mt-auto border-t border-on-primary-container/20 pt-4">
+<div class="px-3 py-2 mb-2 bg-on-primary-container/10 rounded-lg border border-on-primary-container/20 flex items-center justify-between">
+<span class="font-label-md text-label-md text-secondary">System Status: Active</span>
+<div class="w-2 h-2 rounded-full bg-secondary animate-pulse"></div>
+</div>
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 rounded-lg cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 rounded-lg cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-body-md text-body-md">Support</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="absolute top-16 left-[260px] right-0 bottom-0 flex bg-background">
+<!-- Fleet Sidebar / Table Area -->
+<aside class="w-96 bg-surface border-r border-outline-variant flex flex-col z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+<div class="p-card-padding border-b border-outline-variant bg-surface-bright">
+<div class="flex justify-between items-center mb-4">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Fleet Roster</h2>
+<span class="font-label-md text-label-md bg-surface-variant text-on-surface-variant px-2 py-1 rounded">25 Total</span>
+</div>
+<!-- Filter Bar -->
+<div class="relative mb-3">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface border border-outline-variant rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="Filter by Bus ID or Route..." type="text"/>
+</div>
+<div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+<button class="px-3 py-1 bg-on-surface text-surface rounded-full font-label-md text-label-md whitespace-nowrap">All</button>
+<button class="px-3 py-1 bg-surface border border-outline-variant text-on-surface-variant hover:bg-surface-variant rounded-full font-label-md text-label-md whitespace-nowrap">Active (18)</button>
+<button class="px-3 py-1 bg-surface border border-outline-variant text-on-surface-variant hover:bg-surface-variant rounded-full font-label-md text-label-md whitespace-nowrap">Charging (5)</button>
+<button class="px-3 py-1 bg-surface border border-outline-variant text-on-surface-variant hover:bg-surface-variant rounded-full font-label-md text-label-md whitespace-nowrap">Maint (2)</button>
+</div>
+</div>
+<!-- List -->
+<div class="flex-1 overflow-y-auto p-2 space-y-1">
+<!-- Selected Item -->
+<div class="p-3 bg-surface-variant border border-primary/20 rounded-lg cursor-pointer flex flex-col gap-2 relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+<div class="flex justify-between items-start pl-2">
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface leading-tight">EB-014</div>
+<div class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="route">route</span>
+                                Sitabuldi → Hingna
+                            </div>
+</div>
+<span class="inline-flex items-center px-2 py-1 rounded bg-on-tertiary-container/10 border border-on-tertiary-container/30 font-label-md text-label-md text-on-tertiary-container gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container"></span>
+                            Active
+                        </span>
+</div>
+</div>
+<!-- Generic Items -->
+<div class="p-3 hover:bg-surface-variant border border-transparent rounded-lg cursor-pointer flex flex-col gap-2 transition-colors">
+<div class="flex justify-between items-start">
+<div>
+<div class="font-body-lg text-body-lg text-on-surface font-semibold leading-tight">EB-022</div>
+<div class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="route">route</span>
+                                Sitabuldi → Hingna
+                            </div>
+</div>
+<span class="inline-flex items-center px-2 py-1 rounded bg-on-tertiary-container/10 border border-on-tertiary-container/30 font-label-md text-label-md text-on-tertiary-container gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container"></span>
+                            Active
+                        </span>
+</div>
+</div>
+<div class="p-3 hover:bg-surface-variant border border-transparent rounded-lg cursor-pointer flex flex-col gap-2 transition-colors">
+<div class="flex justify-between items-start">
+<div>
+<div class="font-body-lg text-body-lg text-on-surface font-semibold leading-tight">EB-045</div>
+<div class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="route">route</span>
+                                Wardhaman Nagar
+                            </div>
+</div>
+<span class="inline-flex items-center px-2 py-1 rounded bg-secondary-container/10 border border-secondary-container/30 font-label-md text-label-md text-secondary-container gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="ev_station">ev_station</span>
+                            Charging
+                        </span>
+</div>
+</div>
+<div class="p-3 hover:bg-surface-variant border border-transparent rounded-lg cursor-pointer flex flex-col gap-2 transition-colors">
+<div class="flex justify-between items-start">
+<div>
+<div class="font-body-lg text-body-lg text-on-surface font-semibold leading-tight">EB-009</div>
+<div class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="route">route</span>
+                                Depot (Offline)
+                            </div>
+</div>
+<span class="inline-flex items-center px-2 py-1 rounded bg-error/10 border border-error/30 font-label-md text-label-md text-error gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="build">build</span>
+                            Maint
+                        </span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Map Area -->
+<div class="flex-1 relative bg-[#eef1f5] overflow-hidden">
+<!-- Map Background Placeholder -->
+<img class="absolute inset-0 w-full h-full object-cover opacity-80 mix-blend-multiply" data-alt="A high-contrast, minimalist satellite map view of Nagpur city, focusing on the urban road network. The map uses a sophisticated light-mode color palette with subtle greys and muted blues for water bodies. Arterial roads are clearly visible against a clean, light-grey canvas, adhering to a professional, data-first corporate aesthetic suitable for an intelligent transport dashboard. No labels or text." data-location="Nagpur" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCacnNdyBtNzhn8JjnJY5SW4YJwneCutyz2RTGT8PfrnVu5c7-uRWaFE6CcJJNNho7ZQPzrWchIiQmK9F1J3fLY06KzveD5kqhlX7nSBcXrTyomezBMqFYgoaKxZdOh2zLZXpdaWOAAqckEY7aSrDyS6a-GIFdOf2g6AxjK1yFWOZKEk1s9xjTM39ckWnU-p9DTRLOr0yVS55rhAi9D2s6BELR6JvH6k-3Ulccn_vgFZmV5fH8CJ8Owpg"/>
+<!-- Map Controls -->
+<div class="absolute right-4 bottom-4 flex flex-col gap-2 z-10">
+<button class="w-10 h-10 bg-surface border border-outline-variant rounded-lg shadow-sm flex items-center justify-center hover:bg-surface-variant text-on-surface">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<button class="w-10 h-10 bg-surface border border-outline-variant rounded-lg shadow-sm flex items-center justify-center hover:bg-surface-variant text-on-surface">
+<span class="material-symbols-outlined" data-icon="remove">remove</span>
+</button>
+<button class="w-10 h-10 bg-surface border border-outline-variant rounded-lg shadow-sm flex items-center justify-center hover:bg-surface-variant text-on-surface mt-2">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+</button>
+</div>
+<!-- Route & Bus Overlay (CSS/HTML approximation) -->
+<div class="absolute inset-0 pointer-events-none z-10">
+<!-- Simulated Route Line SVG -->
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 1000 800">
+<path class="opacity-30" d="M 300 600 Q 400 500 450 350 T 700 200" fill="none" stroke="#000000" stroke-dasharray="8 8" stroke-linecap="round" stroke-width="4"></path>
+<path class="drop-shadow-md" d="M 300 600 Q 400 500 450 350 T 700 200" fill="none" stroke="#009668" stroke-linecap="round" stroke-width="6"></path>
+</svg>
+<!-- Bus Markers (Positioned over the SVG path visually) -->
+<!-- Highlighted Bus -->
+<div class="absolute top-[350px] left-[450px] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-auto cursor-pointer">
+<div class="bg-surface border-2 border-primary text-primary px-2 py-0.5 rounded shadow-md font-label-md text-label-md mb-1 whitespace-nowrap">
+                        EB-014
+                    </div>
+<div class="w-6 h-6 bg-on-tertiary-container rounded-full border-2 border-surface shadow-lg flex items-center justify-center animate-bounce">
+<span class="material-symbols-outlined text-surface text-[14px]" data-icon="directions_bus">directions_bus</span>
+</div>
+</div>
+<!-- Other Active Bus on Route -->
+<div class="absolute top-[500px] left-[370px] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-auto cursor-pointer opacity-70 hover:opacity-100 transition-opacity">
+<div class="w-5 h-5 bg-on-surface-variant rounded-full border-2 border-surface shadow flex items-center justify-center">
+<span class="material-symbols-outlined text-surface text-[12px]" data-icon="directions_bus">directions_bus</span>
+</div>
+</div>
+<!-- Other Active Bus on Route -->
+<div class="absolute top-[260px] left-[580px] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-auto cursor-pointer opacity-70 hover:opacity-100 transition-opacity">
+<div class="w-5 h-5 bg-on-surface-variant rounded-full border-2 border-surface shadow flex items-center justify-center">
+<span class="material-symbols-outlined text-surface text-[12px]" data-icon="directions_bus">directions_bus</span>
+</div>
+</div>
+</div>
+<!-- Bus Detail Floating Panel -->
+<div class="absolute top-4 left-4 w-96 bg-surface/90 backdrop-blur-md border border-outline-variant rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.12)] flex flex-col z-20 overflow-hidden pointer-events-auto">
+<!-- Header -->
+<div class="p-card-padding border-b border-outline-variant/50 flex justify-between items-start bg-surface-bright/80">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<h3 class="font-headline-md text-headline-md text-on-surface">EB-014</h3>
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-on-tertiary-container/10 border border-on-tertiary-container/30 font-label-md text-label-md text-on-tertiary-container gap-1">Live</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="route">route</span>
+                            Sitabuldi To Hingna (Route 4A)
+                        </p>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<!-- Camera Feed -->
+<div class="relative w-full h-48 bg-primary-container">
+<div class="absolute inset-0 bg-cover bg-center opacity-90" data-alt="A wide-angle dashboard camera view looking out through the windshield of a modern electric bus driving down a bustling urban street in Nagpur. Bright daylight, clear skies. The aesthetic is clean, sharp, and realistic, conveying a sense of live surveillance data. The image should fit within a professional, high-stakes municipal transit dashboard." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDpUnMEJWADafaxH-D-xvter0VgYIVoMMephBb0Ef3WUjjAAVbB_PB2FMq_6PShUTQPFQdq2EWMV_5FJL0aNHfa_I1ztG2wJ4i-5I3-GrhyNPWLjEOwr2KUTqpW42I1eIR6BtpH2cf3-WTnYeXJicXKhfhT-EZ-My3qqlp4rl6qlRlQ-ctk5I8PotZSrT2duOqJLNdQYs_goGc21X9fPGSssyw2ShTlxMxDOA2qyvQUb39Y_7EsTzfbyQ')"></div>
+<!-- Overlay HUD -->
+<div class="absolute inset-0 p-3 flex flex-col justify-between bg-gradient-to-b from-black/40 to-transparent">
+<div class="flex justify-between items-center text-white/90">
+<span class="font-label-md text-label-md font-bold tracking-widest text-[10px]">CAM-FRONT-01</span>
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span>
+<span class="font-label-md text-label-md text-[10px]">REC</span>
+</div>
+</div>
+<div class="font-label-md text-label-md text-white/80 text-[10px] drop-shadow-md">
+                            21.1458° N, 79.0882° E
+                        </div>
+</div>
+</div>
+<!-- Telemetry Grid (Bento Style) -->
+<div class="p-card-padding grid grid-cols-2 gap-3 bg-surface-bright/50">
+<!-- Speed -->
+<div class="col-span-1 bg-surface border border-outline-variant/50 rounded-lg p-3">
+<div class="font-label-md text-label-md text-on-surface-variant mb-1 flex items-center justify-between">
+                            Current Speed
+                            <span class="material-symbols-outlined text-[16px]" data-icon="speed">speed</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="font-data-metric text-data-metric text-on-surface">42</span>
+<span class="font-label-md text-label-md text-on-surface-variant">km/h</span>
+</div>
+</div>
+<!-- Edge AI Status -->
+<div class="col-span-1 bg-surface border border-outline-variant/50 rounded-lg p-3">
+<div class="font-label-md text-label-md text-on-surface-variant mb-1 flex items-center justify-between">
+                            Vision FPS
+                            <span class="material-symbols-outlined text-[16px]" data-icon="visibility">visibility</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="font-data-metric text-data-metric text-on-tertiary-container">30</span>
+<span class="font-label-md text-label-md text-on-surface-variant">fps</span>
+</div>
+</div>
+<!-- GPU Util Full Width -->
+<div class="col-span-2 bg-surface border border-outline-variant/50 rounded-lg p-3">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="memory">memory</span>
+                                Edge GPU Utilization
+                            </span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">78%</span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-1.5 rounded-full" style="width: 78%"></div>
+</div>
+<div class="flex justify-between mt-2 font-label-md text-label-md text-outline text-[10px]">
+<span>Temp: 64°C</span>
+<span>Model: YoloV8-Nano</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

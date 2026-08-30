@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Traffic Analytics - UrbanSense AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#ffffff",
+                      "surface": "#f8f9ff",
+                      "on-secondary-container": "#5c2400",
+                      "on-background": "#0b1c30",
+                      "tertiary": "#000000",
+                      "primary-container": "#131b2e",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#c6c6cd",
+                      "on-primary-fixed-variant": "#3f465c",
+                      "on-secondary-fixed": "#341100",
+                      "primary": "#000000",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-surface-variant": "#45464d",
+                      "on-secondary-fixed-variant": "#783200",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-high": "#dce9ff",
+                      "on-tertiary-container": "#009668",
+                      "on-primary": "#ffffff",
+                      "primary-fixed": "#dae2fd",
+                      "surface-tint": "#565e74",
+                      "inverse-primary": "#bec6e0",
+                      "tertiary-fixed-dim": "#4edea3",
+                      "surface-container": "#e5eeff",
+                      "tertiary-fixed": "#6ffbbe",
+                      "background": "#f8f9ff",
+                      "outline": "#76777d",
+                      "on-primary-fixed": "#131b2e",
+                      "tertiary-container": "#002113",
+                      "secondary-container": "#fd761a",
+                      "error": "#ba1a1a",
+                      "surface-variant": "#d3e4fe",
+                      "secondary": "#9d4300",
+                      "surface-dim": "#cbdbf5",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-container": "#7c839b",
+                      "secondary-fixed": "#ffdbca",
+                      "primary-fixed-dim": "#bec6e0",
+                      "surface-container-highest": "#d3e4fe",
+                      "on-error-container": "#93000a",
+                      "on-error": "#ffffff",
+                      "secondary-fixed-dim": "#ffb690",
+                      "inverse-surface": "#213145",
+                      "surface-bright": "#f8f9ff",
+                      "surface-container-low": "#eff4ff",
+                      "on-tertiary-fixed": "#002113",
+                      "on-surface": "#0b1c30",
+                      "on-tertiary-fixed-variant": "#005236"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "base": "4px",
+                      "card-padding": "20px",
+                      "container-margin": "24px",
+                      "sidebar-width": "260px"
+              },
+              "fontFamily": {
+                      "data-metric": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "JetBrains Mono"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-sm": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "data-metric": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-sm": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "36px",
+                              {
+                                      "lineHeight": "44px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background font-body-md h-screen overflow-hidden flex">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-sidebar-width bg-primary-container dark:bg-primary-container border-r border-outline-variant dark:border-outline-variant flex flex-col p-4 z-50">
+<div class="flex items-center gap-3 mb-8">
+<img alt="UrbanSense AI Logo" class="w-10 h-10 object-contain rounded" data-alt="A minimalist, highly professional abstract 3D geometric logo featuring glowing light-blue wireframe nodes connected against a stark white studio background. The lighting is extremely soft, resembling a premium corporate technology brand identity. The aesthetic is extremely clean and precise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZrJ63Icr7yNYhfMCm0VB01N3mQplQnapvQrg8GH4J3TLJj1WEprwFW1diroi7zu4Ui754MKm9Nw1dZPXNSRylpaoLwW8qi2DFoBL7B6oryKtwhKiO3kfIsTtONV77mqM6T28inboH9crkPdABNSpPCWSd3bzXw3S89hOlyxZ4yY_bVGNzVsCrJEOubIZ4kilHLje9YFsN3BAqwHzsfCj_Kbrn4eNaQpEowUHtsujtBknWyt8Yfeci1g"/>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-on-primary">UrbanSense AI</h1>
+<p class="font-label-md text-label-md text-on-primary-container mt-1">Nagpur PM-eBus</p>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Command Center</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">directions_bus</span>
+<span class="font-body-md text-body-md">Fleet Tracker</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">visibility</span>
+<span class="font-body-md text-body-md">Road Intelligence</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-secondary-container text-on-secondary-container font-bold cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-md text-body-md">Traffic Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">emergency</span>
+<span class="font-body-md text-body-md">Incident Manager</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">memory</span>
+<span class="font-body-md text-body-md">Edge Monitor</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-body-md text-body-md">Coverage Analysis</span>
+</a>
+</nav>
+<div class="mt-auto pt-4 border-t border-outline-variant/30">
+<div class="px-3 py-2 mb-2 text-on-primary font-label-md text-label-md">System Status: Active</div>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-md text-body-md">Support</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="flex-1 ml-sidebar-width flex flex-col h-full bg-surface">
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-260px)] h-16 bg-surface dark:bg-surface-container-lowest border-b border-outline-variant flex justify-between items-center px-gutter z-40">
+<div class="flex items-center gap-6">
+<span class="font-headline-md text-headline-md font-bold text-on-background">UrbanSense AI</span>
+<nav class="flex gap-6 h-full items-center">
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1 h-full flex items-center pt-1" href="#">Nagpur</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-opacity duration-200 focus-within:ring-2 focus-within:ring-primary rounded-full p-1">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-opacity duration-200 focus-within:ring-2 focus-within:ring-primary rounded-full p-1">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<main class="flex-1 mt-16 p-container-margin overflow-y-auto">
+<div class="grid grid-cols-12 gap-gutter h-full">
+<!-- Left Column (Stats & Charts) -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<!-- KPI Row -->
+<div class="grid grid-cols-2 gap-gutter">
+<div class="bg-surface-container-lowest border border-outline-variant p-card-padding rounded-lg flex flex-col">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-2">Avg Trip Delay</h3>
+<div class="font-data-metric text-data-metric text-on-background mb-1">+14m</div>
+<div class="font-body-md text-body-md text-error flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                                12% vs last week
+                            </div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-card-padding rounded-lg flex flex-col">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-2">Active Nodes</h3>
+<div class="font-data-metric text-data-metric text-on-background mb-1">124</div>
+<div class="font-body-md text-body-md text-on-tertiary-container flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                                98% online
+                            </div>
+</div>
+</div>
+<!-- Vehicle Classification Chart (Bento Card) -->
+<div class="bg-surface-container-lowest border border-outline-variant p-card-padding rounded-xl flex flex-col flex-1 min-h-[300px]">
+<h3 class="font-headline-sm text-headline-sm text-on-background mb-4">Vehicle Classification</h3>
+<div class="flex-1 relative border-l border-b border-outline-variant mt-2 mb-6 ml-4 mr-2">
+<!-- Y-axis labels -->
+<div class="absolute -left-6 top-0 bottom-0 flex flex-col justify-between text-xs text-outline font-label-md">
+<span>10k</span>
+<span>5k</span>
+<span>0</span>
+</div>
+<!-- Bars -->
+<div class="absolute inset-0 flex items-end justify-around px-4">
+<div class="w-8 bg-primary rounded-t-sm h-[80%] relative group">
+<div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs font-label-md text-on-surface-variant">2W</div>
+</div>
+<div class="w-8 bg-surface-tint rounded-t-sm h-[60%] relative group">
+<div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs font-label-md text-on-surface-variant">4W</div>
+</div>
+<div class="w-8 bg-secondary rounded-t-sm h-[30%] relative group">
+<div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs font-label-md text-on-surface-variant">3W</div>
+</div>
+<div class="w-8 bg-tertiary-fixed-dim rounded-t-sm h-[15%] relative group">
+<div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs font-label-md text-on-surface-variant">HCV</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottlenecks List -->
+<div class="bg-surface-container-lowest border border-outline-variant p-card-padding rounded-xl flex flex-col max-h-[300px]">
+<h3 class="font-headline-sm text-headline-sm text-on-background mb-4">Top Bottlenecks</h3>
+<ul class="space-y-3 overflow-y-auto pr-2">
+<li class="flex justify-between items-center pb-2 border-b border-outline-variant/50">
+<div>
+<div class="font-body-md text-body-md font-semibold">Sitabuldi Square</div>
+<div class="font-label-md text-label-md text-on-surface-variant">Flow rate: 12km/h</div>
+</div>
+<span class="bg-error/10 border border-error/30 text-error px-2 py-1 rounded text-xs font-bold uppercase tracking-wider">Critical</span>
+</li>
+<li class="flex justify-between items-center pb-2 border-b border-outline-variant/50">
+<div>
+<div class="font-body-md text-body-md font-semibold">Variety Square</div>
+<div class="font-label-md text-label-md text-on-surface-variant">Flow rate: 18km/h</div>
+</div>
+<span class="bg-secondary/10 border border-secondary/30 text-secondary px-2 py-1 rounded text-xs font-bold uppercase tracking-wider">Major</span>
+</li>
+<li class="flex justify-between items-center pb-2 border-b border-outline-variant/50">
+<div>
+<div class="font-body-md text-body-md font-semibold">Medical Square</div>
+<div class="font-label-md text-label-md text-on-surface-variant">Flow rate: 24km/h</div>
+</div>
+<span class="bg-secondary/10 border border-secondary/30 text-secondary px-2 py-1 rounded text-xs font-bold uppercase tracking-wider">Major</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Right Column (Map & Deep Dive) -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-gutter">
+<!-- Congestion Map (Main Focal Point) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl flex-1 relative overflow-hidden min-h-[500px]">
+<!-- Map Background -->
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A highly detailed, professional digital map interface of a sprawling metropolitan area displayed in light mode. The map features stark, minimalist white and light-gray geometry for buildings and terrain. Roads are represented as high-contrast wireframe lines. Data visualizations overlay the map in glowing, precise gradients of green, amber, and intense red to indicate traffic flow densities. The aesthetic is extremely analytical and modern corporate." data-location="Nagpur" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDvr3y87lqs6EDWH65UVtjmHN91yiIH69sdOSWgPhaxveXxKqiCpsoAJn6xiJfZelhw-e_18FloYUEKqeQgLpG5cwM2dUBgsHWEzgrxC4_iSaKkNuzhyx80ivKuUZbVnqMKDoJ4jM0hgJi2t5z_SfnFxDnUmc_I6EXAej7-5l4iNNaT2y-4S-WfWrYeO0lruGl9zl68Tr-I7ZobRaeor8xu6DpY_XwY4nM_8bwO7trTwLGXe6d6P8K36w')"></div>
+<!-- Map Controls Floating -->
+<div class="absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-2 shadow-sm pointer-events-auto flex items-center gap-2">
+<span class="material-symbols-outlined text-outline">search</span>
+<input class="border-none focus:ring-0 bg-transparent font-body-md text-body-md w-48 p-0 text-on-background placeholder-outline" placeholder="Search intersection..." type="text"/>
+</div>
+<div class="flex flex-col gap-2 pointer-events-auto">
+<button class="w-8 h-8 bg-surface-container-lowest border border-outline-variant rounded flex items-center justify-center hover:bg-surface-variant transition-colors shadow-sm">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+<button class="w-8 h-8 bg-surface-container-lowest border border-outline-variant rounded flex items-center justify-center hover:bg-surface-variant transition-colors shadow-sm">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<button class="w-8 h-8 bg-surface-container-lowest border border-outline-variant rounded flex items-center justify-center hover:bg-surface-variant transition-colors mt-2 shadow-sm">
+<span class="material-symbols-outlined text-sm">layers</span>
+</button>
+</div>
+</div>
+<!-- Overlay Legend -->
+<div class="absolute bottom-4 left-4 bg-surface-container-lowest/90 backdrop-blur-sm border border-outline-variant p-3 rounded-lg pointer-events-auto shadow-sm">
+<div class="font-label-md text-label-md font-semibold mb-2 uppercase text-on-surface-variant">Flow Density</div>
+<div class="flex gap-1 h-2 w-32 rounded overflow-hidden mb-1">
+<div class="flex-1 bg-tertiary-fixed-dim"></div>
+<div class="flex-1 bg-secondary-container"></div>
+<div class="flex-1 bg-error"></div>
+</div>
+<div class="flex justify-between text-xs font-label-md text-outline">
+<span>Free</span>
+<span>Heavy</span>
+</div>
+</div>
+</div>
+<!-- Peak Hours Heatmap / Trend -->
+<div class="bg-surface-container-lowest border border-outline-variant p-card-padding rounded-xl h-[240px] flex flex-col">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-headline-sm text-headline-sm text-on-background">Peak Congestion Hours</h3>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-primary text-primary font-label-md text-label-md rounded hover:bg-surface-variant">Today</button>
+<button class="px-3 py-1 border border-outline-variant text-outline font-label-md text-label-md rounded hover:bg-surface-variant">Week</button>
+</div>
+</div>
+<!-- Simple Heatmap Representation -->
+<div class="flex-1 flex flex-col justify-between relative mt-4">
+<div class="flex justify-between items-end h-full w-full gap-1">
+<!-- Hour Blocks (Stylized) -->
+<div class="w-full bg-surface-variant h-[20%] rounded-t-sm hover:bg-tertiary-fixed-dim transition-colors relative group"><div class="hidden group-hover:block absolute -top-6 left-1/2 -translate-x-1/2 bg-surface text-on-surface text-xs p-1 rounded shadow border border-outline-variant z-10">6AM</div></div>
+<div class="w-full bg-secondary-container h-[50%] rounded-t-sm relative group"><div class="hidden group-hover:block absolute -top-6 left-1/2 -translate-x-1/2 bg-surface text-on-surface text-xs p-1 rounded shadow border border-outline-variant z-10">8AM</div></div>
+<div class="w-full bg-error h-[80%] rounded-t-sm relative group"><div class="hidden group-hover:block absolute -top-6 left-1/2 -translate-x-1/2 bg-surface text-on-surface text-xs p-1 rounded shadow border border-outline-variant z-10">9AM</div></div>
+<div class="w-full bg-error h-[90%] rounded-t-sm relative group"><div class="hidden group-hover:block absolute -top-6 left-1/2 -translate-x-1/2 bg-surface text-on-surface text-xs p-1 rounded shadow border border-outline-variant z-10">10AM</div></div>
+<div class="w-full bg-secondary-container h-[60%] rounded-t-sm relative group"><div class="hidden group-hover:block absolute -top-6 left-1/2 -translate-x-1/2 bg-surface text-on-surface text-xs p-1 rounded shadow border border-outline-variant z-10">11AM</div></div>
+<div class="w-full bg-surface-variant h-[30%] rounded-t-sm relative group"><div class="hidden group-hover:block absolute -top-6 left-1/2 -translate-x-1/2 bg-surface text-on-surface text-xs p-1 rounded shadow border border-outline-variant z-10">1PM</div></div>
+<div class="w-full bg-surface-variant h-[40%] rounded-t-sm relative group"><div class="hidden group-hover:block absolute -top-6 left-1/2 -translate-x-1/2 bg-surface text-on-surface text-xs p-1 rounded shadow border border-outline-variant z-10">3PM</div></div>
+<div class="w-full bg-secondary-container h-[70%] rounded-t-sm relative group"><div class="hidden group-hover:block absolute -top-6 left-1/2 -translate-x-1/2 bg-surface text-on-surface text-xs p-1 rounded shadow border border-outline-variant z-10">5PM</div></div>
+<div class="w-full bg-error h-[100%] rounded-t-sm relative group"><div class="hidden group-hover:block absolute -top-6 left-1/2 -translate-x-1/2 bg-surface text-on-surface text-xs p-1 rounded shadow border border-outline-variant z-10">6PM</div></div>
+<div class="w-full bg-error h-[85%] rounded-t-sm relative group"><div class="hidden group-hover:block absolute -top-6 left-1/2 -translate-x-1/2 bg-surface text-on-surface text-xs p-1 rounded shadow border border-outline-variant z-10">7PM</div></div>
+<div class="w-full bg-secondary-container h-[40%] rounded-t-sm relative group"><div class="hidden group-hover:block absolute -top-6 left-1/2 -translate-x-1/2 bg-surface text-on-surface text-xs p-1 rounded shadow border border-outline-variant z-10">9PM</div></div>
+<div class="w-full bg-surface-variant h-[10%] rounded-t-sm relative group"><div class="hidden group-hover:block absolute -top-6 left-1/2 -translate-x-1/2 bg-surface text-on-surface text-xs p-1 rounded shadow border border-outline-variant z-10">11PM</div></div>
+</div>
+<div class="flex justify-between text-xs text-outline font-label-md mt-2 pt-2 border-t border-outline-variant">
+<span>06:00</span>
+<span>12:00</span>
+<span>18:00</span>
+<span>24:00</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

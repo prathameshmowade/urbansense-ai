@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Traffic Analytics - Mobile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#eaf1ff",
+                        "outline": "#76777d",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-container-high": "#dce9ff",
+                        "secondary-fixed-dim": "#ffb690",
+                        "primary-fixed": "#dae2fd",
+                        "on-secondary-fixed": "#341100",
+                        "secondary-fixed": "#ffdbca",
+                        "inverse-primary": "#bec6e0",
+                        "on-tertiary-fixed": "#002113",
+                        "tertiary-fixed": "#6ffbbe",
+                        "secondary-container": "#fd761a",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "background": "#f8f9ff",
+                        "on-surface": "#0b1c30",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "error": "#ba1a1a",
+                        "primary": "#000000",
+                        "on-primary-fixed": "#131b2e",
+                        "surface": "#f8f9ff",
+                        "surface-container": "#e5eeff",
+                        "on-secondary-container": "#5c2400",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#45464d",
+                        "secondary": "#9d4300",
+                        "outline-variant": "#c6c6cd",
+                        "on-secondary-fixed-variant": "#783200",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#002113",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed-dim": "#bec6e0",
+                        "surface-tint": "#565e74",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#7c839b",
+                        "surface-variant": "#d3e4fe",
+                        "tertiary": "#000000",
+                        "on-background": "#0b1c30",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "surface-dim": "#cbdbf5",
+                        "inverse-surface": "#213145",
+                        "on-tertiary-container": "#009668",
+                        "primary-container": "#131b2e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "sidebar-width": "260px",
+                        "card-padding": "20px",
+                        "container-margin": "24px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "data-metric": ["Inter"],
+                        "label-md": ["JetBrains Mono"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "display-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "data-metric": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #F8FAFC; } /* Explicit level 0 canvas */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid #E2E8F0;
+        }
+        /* Hide scrollbar for horizontal scrolling containers */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-lg min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface text-primary dark:text-on-primary-fixed border-b border-outline-variant dark:border-outline docked full-width top-0 z-40 sticky">
+<div class="flex justify-between items-center w-full px-container-margin h-16">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed" data-icon="sensors">sensors</span>
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">UrbanSense AI</span>
+</div>
+<button class="font-label-md text-label-md text-primary dark:text-on-primary-fixed hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-200 px-3 py-1.5 rounded-lg border border-outline-variant">
+                Live Camera
+            </button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="p-4 flex flex-col gap-4">
+<!-- Header Section -->
+<div class="mb-2">
+<h1 class="font-headline-sm text-headline-sm text-on-surface">Traffic Analytics</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Live overview of city-wide congestion metrics.</p>
+</div>
+<!-- KPI Cards Grid (Bento Style) -->
+<div class="grid grid-cols-2 gap-4">
+<!-- Avg Delay Card -->
+<div class="glass-card rounded-xl p-[20px] flex flex-col justify-between shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Avg Delay</span>
+<span class="material-symbols-outlined text-error text-[18px]" data-icon="trending_up">trending_up</span>
+</div>
+<div class="font-data-metric text-data-metric text-on-surface">14<span class="text-headline-sm text-on-surface-variant">min</span></div>
+<div class="mt-2 text-error font-body-md text-body-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span> +2.4% vs last hr
+                </div>
+</div>
+<!-- Active Nodes Card -->
+<div class="glass-card rounded-xl p-[20px] flex flex-col justify-between shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Active Nodes</span>
+<span class="material-symbols-outlined text-tertiary-container text-[18px]" data-icon="sensors">sensors</span>
+</div>
+<div class="font-data-metric text-data-metric text-on-surface">842</div>
+<div class="mt-2 text-on-surface-variant font-body-md text-body-md flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim inline-block"></span> 98% operational
+                </div>
+</div>
+</div>
+<!-- Congestion Heatmap (Map Area) -->
+<div class="glass-card rounded-xl overflow-hidden shadow-sm relative h-64 mt-2 border border-outline-variant">
+<div class="absolute inset-0 bg-surface-container-low z-0">
+<!-- Fallback Map Image placeholder -->
+<img class="w-full h-full object-cover opacity-60 mix-blend-multiply" data-alt="A highly detailed, top-down minimalist street map view of a modern city center, styled in a sleek light mode aesthetic with white and light gray roads against a pale blue-gray background. Vibrant heat map overlays in bright orange and red indicate heavy traffic congestion on major arterial routes, while thin green lines show clear paths. The image feels technical, precise, and professional, suitable for a smart city dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_AgJf1OSMU9AKcK9EW6ktM9BbbHy1z0DzFykSpfoaSTWBZ5ol9joUOcf95OQDanISq7oEDq_j7Ye-JkL16nTN4w9qETH8PU7FrhhcFhY9K_-gt66tjltbQQauLbbeK_FJE5D1s6EaxZHQfsTPWDYY5nj3c7vRR_1yxwCcjy2tB6j852D_Y6u_8UEP6kCKSJyWlgDaFfio2GfkrFGlcqmFkhWjmW6av1EmZ0HVNtrwPrCILXsDGp4-8w"/>
+</div>
+<!-- Map UI Overlays -->
+<div class="absolute top-4 left-4 z-10 w-[calc(100%-80px)]">
+<div class="bg-surface rounded-lg h-[40px] flex items-center px-3 border border-outline-variant shadow-[0px_4px_20px_rgba(0,0,0,0.05)]">
+<span class="material-symbols-outlined text-on-surface-variant mr-2 text-[20px]" data-icon="search">search</span>
+<input class="bg-transparent border-none outline-none w-full font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:ring-0 p-0" placeholder="Search intersections..." type="text"/>
+</div>
+</div>
+<div class="absolute right-4 top-4 z-10 flex flex-col gap-2">
+<button class="w-[32px] h-[32px] bg-surface rounded flex items-center justify-center border border-outline-variant shadow-[0px_4px_20px_rgba(0,0,0,0.05)] text-on-surface hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="layers">layers</span>
+</button>
+</div>
+<div class="absolute right-4 bottom-4 z-10 flex flex-col gap-1">
+<button class="w-[32px] h-[32px] bg-surface rounded-t flex items-center justify-center border border-b-0 border-outline-variant shadow-[0px_4px_20px_rgba(0,0,0,0.05)] text-on-surface hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+</button>
+<button class="w-[32px] h-[32px] bg-surface rounded-b flex items-center justify-center border border-outline-variant shadow-[0px_4px_20px_rgba(0,0,0,0.05)] text-on-surface hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="remove">remove</span>
+</button>
+</div>
+<!-- Heatmap Status Badge Overlay -->
+<div class="absolute bottom-4 left-4 z-10">
+<div class="bg-secondary-fixed/10 border border-secondary/30 px-2 py-1 rounded flex items-center gap-1 backdrop-blur-md">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-label-md text-label-md text-secondary">Major Congestion - Downtown</span>
+</div>
+</div>
+</div>
+<!-- Vehicle Classification Chart Area -->
+<div class="glass-card rounded-xl p-[20px] shadow-sm mt-2 flex flex-col gap-4">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Vehicle Classification</h2>
+<!-- Vertical Bar Chart Mockup -->
+<div class="flex flex-col gap-3">
+<!-- Bar 1 -->
+<div>
+<div class="flex justify-between items-center mb-1">
+<span class="font-body-md text-body-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="directions_car">directions_car</span>
+                             Passenger
+                        </span>
+<span class="font-label-md text-label-md text-on-surface font-bold">62%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 62%"></div>
+</div>
+</div>
+<!-- Bar 2 -->
+<div>
+<div class="flex justify-between items-center mb-1">
+<span class="font-body-md text-body-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="local_shipping">local_shipping</span>
+                             Commercial
+                        </span>
+<span class="font-label-md text-label-md text-on-surface font-bold">24%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-on-primary-container h-full rounded-full" style="width: 24%"></div>
+</div>
+</div>
+<!-- Bar 3 -->
+<div>
+<div class="flex justify-between items-center mb-1">
+<span class="font-body-md text-body-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="directions_bus">directions_bus</span>
+                             Transit
+                        </span>
+<span class="font-label-md text-label-md text-on-surface font-bold">14%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-tertiary-container h-full rounded-full" style="width: 14%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Top Bottlenecks List -->
+<div class="glass-card rounded-xl p-[20px] shadow-sm mt-2 flex flex-col gap-3 mb-8">
+<div class="flex justify-between items-center mb-2">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Top Bottlenecks</h2>
+<button class="text-primary font-label-md text-label-md hover:underline">View All</button>
+</div>
+<div class="flex flex-col gap-0 divide-y divide-outline-variant">
+<!-- Item 1 -->
+<div class="py-3 flex justify-between items-center group">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-error-container flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[18px]" data-icon="warning">warning</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-bold">I-95 Northbound</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Accident near Exit 12</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-body-md text-body-md text-error font-bold">+28m</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Delay</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="py-3 flex justify-between items-center group">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]" data-icon="traffic">traffic</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-bold">Main St &amp; 5th Ave</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Signal Malfunction</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-body-md text-body-md text-secondary font-bold">+15m</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Delay</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="py-3 flex justify-between items-center group">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="construction">construction</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-bold">Bridge Blvd</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Lane Closure</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-body-md text-body-md text-on-surface font-bold">+8m</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Delay</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface dark:bg-surface border-t border-outline-variant dark:border-outline shadow-sm fixed bottom-0 w-full z-50 fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="directions_bus">directions_bus</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="edit_road">edit_road</span>
+</a>
+<!-- Active Tab for Analytics -->
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary-fixed text-on-secondary-container dark:text-on-secondary-fixed rounded-full p-2 scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="analytics" data-weight="fill" style="font-variation-settings: 'FILL' 1;">analytics</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="emergency">emergency</span>
+</a>
+</nav>
+</body></html>

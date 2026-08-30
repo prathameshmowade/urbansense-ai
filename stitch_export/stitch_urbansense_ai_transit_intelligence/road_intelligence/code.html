@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Road Intelligence - UrbanSense AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary": "#ffffff",
+                    "surface": "#f8f9ff",
+                    "on-secondary-container": "#5c2400",
+                    "on-background": "#0b1c30",
+                    "tertiary": "#000000",
+                    "primary-container": "#131b2e",
+                    "error-container": "#ffdad6",
+                    "outline-variant": "#c6c6cd",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "on-secondary-fixed": "#341100",
+                    "primary": "#000000",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-surface-variant": "#45464d",
+                    "on-secondary-fixed-variant": "#783200",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#dce9ff",
+                    "on-tertiary-container": "#009668",
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#dae2fd",
+                    "surface-tint": "#565e74",
+                    "inverse-primary": "#bec6e0",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "surface-container": "#e5eeff",
+                    "tertiary-fixed": "#6ffbbe",
+                    "background": "#f8f9ff",
+                    "outline": "#76777d",
+                    "on-primary-fixed": "#131b2e",
+                    "tertiary-container": "#002113",
+                    "secondary-container": "#fd761a",
+                    "error": "#ba1a1a",
+                    "surface-variant": "#d3e4fe",
+                    "secondary": "#9d4300",
+                    "surface-dim": "#cbdbf5",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-container": "#7c839b",
+                    "secondary-fixed": "#ffdbca",
+                    "primary-fixed-dim": "#bec6e0",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "secondary-fixed-dim": "#ffb690",
+                    "inverse-surface": "#213145",
+                    "surface-bright": "#f8f9ff",
+                    "surface-container-low": "#eff4ff",
+                    "on-tertiary-fixed": "#002113",
+                    "on-surface": "#0b1c30",
+                    "on-tertiary-fixed-variant": "#005236"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "base": "4px",
+                    "card-padding": "20px",
+                    "container-margin": "24px",
+                    "sidebar-width": "260px"
+            },
+            "fontFamily": {
+                    "data-metric": [
+                            "Inter"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "label-md": [
+                            "JetBrains Mono"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "headline-sm": [
+                            "Inter"
+                    ],
+                    "display-lg": [
+                            "Inter"
+                    ],
+                    "headline-md": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "data-metric": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-md": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "body-lg": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-sm": [
+                            "20px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "36px",
+                            {
+                                    "lineHeight": "44px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .map-bg-pattern {
+            background-color: #f8f9ff;
+            background-image: linear-gradient(#dce9ff 1px, transparent 1px), linear-gradient(90deg, #dce9ff 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md min-h-screen">
+<nav class="fixed left-0 top-0 h-full w-sidebar-width bg-primary-container dark:bg-primary-container border-r border-outline-variant dark:border-outline-variant flex flex-col h-full p-4 z-50">
+<div class="flex items-center gap-3 mb-8 px-2">
+<div class="w-8 h-8 bg-surface-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-on-primary">UrbanSense AI</h1>
+<p class="font-label-md text-label-md text-on-primary-container">Nagpur PM-eBus</p>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 cursor-pointer active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Command Center</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 cursor-pointer active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="directions_bus">directions_bus</span>
+<span>Fleet Tracker</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 bg-secondary-container text-on-secondary-container font-bold rounded-lg cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="visibility" style="font-variation-settings: 'FILL' 1;">visibility</span>
+<span>Road Intelligence</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 cursor-pointer active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>Traffic Analytics</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 cursor-pointer active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="emergency">emergency</span>
+<span>Incident Manager</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 cursor-pointer active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="memory">memory</span>
+<span>Edge Monitor</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 cursor-pointer active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span>Coverage Analysis</span>
+</a>
+</li>
+</ul>
+</div>
+<div class="mt-auto pt-4 border-t border-outline-variant/20">
+<div class="mb-4 px-3 py-2 bg-on-primary-container/10 rounded-lg">
+<p class="font-label-md text-label-md text-on-primary">System Status: Active</p>
+</div>
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 cursor-pointer active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:bg-surface-variant hover:text-on-surface-variant transition-colors duration-200 cursor-pointer active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>Support</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<header class="fixed top-0 right-0 w-[calc(100%-260px)] h-16 bg-surface dark:bg-surface-container-lowest border-b border-outline-variant flex justify-between items-center px-gutter z-40">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Search address, bus ID..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<nav class="flex gap-4">
+<a class="text-primary border-b-2 border-primary pb-1 font-label-md text-label-md" href="#">Nagpur</a>
+</nav>
+<div class="flex items-center gap-4 border-l border-outline-variant pl-4">
+<button class="text-on-surface-variant hover:text-primary transition-opacity duration-200 cursor-pointer active:scale-95 focus-within:ring-2 focus-within:ring-primary rounded-full p-1">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-opacity duration-200 cursor-pointer active:scale-95 focus-within:ring-2 focus-within:ring-primary rounded-full p-1">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="ml-sidebar-width mt-16 p-container-margin">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="font-headline-md text-headline-md font-bold text-on-background mb-1">Road Intelligence</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Live temporal analysis of municipal infrastructure defects.</p>
+</div>
+<div class="flex bg-surface-container rounded-lg p-1 border border-outline-variant">
+<button class="px-4 py-1.5 bg-surface rounded shadow-sm text-primary font-label-md text-label-md">Pending</button>
+<button class="px-4 py-1.5 text-on-surface-variant hover:text-primary font-label-md text-label-md transition-colors">Resolved</button>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-gutter">
+<div class="col-span-12 lg:col-span-8 bg-surface border border-outline-variant rounded-xl overflow-hidden relative h-[400px]">
+<div class="absolute top-4 left-4 z-10 bg-surface/90 backdrop-blur-sm border border-outline-variant rounded-lg p-3 shadow-sm">
+<h3 class="font-label-md text-label-md text-on-surface mb-2">Defect Clusters</h3>
+<div class="flex items-center gap-2 mb-1">
+<div class="w-3 h-3 rounded-full bg-secondary"></div>
+<span class="font-body-md text-body-md text-on-surface-variant text-xs">High Density</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-secondary/40 border border-secondary"></div>
+<span class="font-body-md text-body-md text-on-surface-variant text-xs">Isolated</span>
+</div>
+</div>
+<div class="absolute right-4 top-4 z-10 flex flex-col gap-2">
+<button class="w-8 h-8 bg-surface border border-outline-variant rounded flex items-center justify-center hover:bg-surface-variant transition-colors shadow-sm">
+<span class="material-symbols-outlined text-on-surface" style="font-size: 20px;">add</span>
+</button>
+<button class="w-8 h-8 bg-surface border border-outline-variant rounded flex items-center justify-center hover:bg-surface-variant transition-colors shadow-sm">
+<span class="material-symbols-outlined text-on-surface" style="font-size: 20px;">remove</span>
+</button>
+<button class="w-8 h-8 bg-surface border border-outline-variant rounded flex items-center justify-center hover:bg-surface-variant transition-colors shadow-sm mt-2">
+<span class="material-symbols-outlined text-on-surface" style="font-size: 20px;">layers</span>
+</button>
+</div>
+<div class="w-full h-full map-bg-pattern relative" data-location="Nagpur, India" style="">
+<div class="absolute top-[30%] left-[40%] flex items-center justify-center">
+<div class="w-12 h-12 bg-secondary/20 rounded-full animate-pulse absolute"></div>
+<div class="w-4 h-4 bg-secondary rounded-full border-2 border-surface z-10"></div>
+<div class="absolute -top-8 bg-surface border border-outline-variant rounded px-2 py-1 shadow-sm font-label-md text-xs text-on-surface whitespace-nowrap">
+                            Wardha Rd. (12)
+                        </div>
+</div>
+<div class="absolute top-[60%] left-[25%] flex items-center justify-center">
+<div class="w-8 h-8 bg-secondary/20 rounded-full animate-pulse absolute"></div>
+<div class="w-3 h-3 bg-secondary rounded-full border-2 border-surface z-10"></div>
+</div>
+<div class="absolute top-[20%] left-[70%] flex items-center justify-center">
+<div class="w-16 h-16 bg-secondary/20 rounded-full animate-pulse absolute"></div>
+<div class="w-5 h-5 bg-secondary rounded-full border-2 border-surface z-10"></div>
+<div class="absolute -top-8 bg-surface border border-outline-variant rounded px-2 py-1 shadow-sm font-label-md text-xs text-on-surface whitespace-nowrap">
+                            CA Road (28)
+                        </div>
+</div>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<div class="bg-surface border border-outline-variant rounded-xl p-card-padding flex-1 flex flex-col">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase mb-4">Detection Metrics (24h)</h3>
+<div class="grid grid-cols-2 gap-4 flex-1">
+<div class="flex flex-col justify-center">
+<span class="font-data-metric text-data-metric text-on-background">142</span>
+<span class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-error" style="font-size: 16px;">trending_up</span> Potholes
+                            </span>
+</div>
+<div class="flex flex-col justify-center">
+<span class="font-data-metric text-data-metric text-on-background">86</span>
+<span class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-outline" style="font-size: 16px;">trending_flat</span> Cracks
+                            </span>
+</div>
+<div class="flex flex-col justify-center border-t border-outline-variant/30 pt-4">
+<span class="font-data-metric text-data-metric text-on-background">12</span>
+<span class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-on-tertiary-container" style="font-size: 16px;">trending_down</span> Waterlogging
+                            </span>
+</div>
+<div class="flex flex-col justify-center border-t border-outline-variant/30 pt-4">
+<span class="font-data-metric text-data-metric text-on-background">4</span>
+<span class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-outline" style="font-size: 16px;">trending_flat</span> Signage
+                            </span>
+</div>
+</div>
+</div>
+</div>
+<div class="col-span-12 mt-4">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-background">Recent High-Confidence Detections</h3>
+<a class="font-label-md text-label-md text-primary flex items-center hover:underline" href="#">View All Log <span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span></a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-gutter">
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden hover:border-primary/50 transition-colors cursor-pointer group">
+<div class="h-40 bg-surface-container relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A crisp, high-resolution dashcam snapshot capturing a large, jagged pothole on a sunlit asphalt road in Nagpur, India. The image is framed as if viewed through a municipal transit monitoring system, clear and objective. The lighting is bright daylight, highlighting the depth and sharp edges of the asphalt damage. The overall aesthetic aligns with a modern, light-mode dashboard, emphasizing data clarity and professional urban management." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRTESzYKccxF2ZwryiRY5tlwZ4s6bX9qIwhHHjcaOlqL3wQ43wJ-OqEU7edSZJ6-cwumVEAoZzT5xh0YNHtYxdw_yHtd2ikhe-Sdsu6jP2ZIoYf1sLDLfS81-pC2f_LyVmH7sjWwwcWjmfCXupIEQWEM_56n4jFCf_s8FQVPp2EPGW2I0FZr1Rdx0QTZ1FSuvHpJNnHuSIdWYOpTqfnMh6-NqeAhjq2C0mcvSf23wzAfrQOyFstTxjVA"/>
+<div class="absolute top-2 right-2 bg-surface/90 backdrop-blur-sm border border-outline-variant rounded px-2 py-1 flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-on-tertiary-container" style="font-size: 14px; font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-md text-label-md text-on-tertiary-container">98%</span>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline-sm text-base font-semibold text-on-background">Pothole</h4>
+<span class="bg-secondary/10 border border-secondary/30 text-secondary px-2 py-0.5 rounded font-label-md text-[10px] uppercase tracking-wider">Critical</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mb-3 line-clamp-2">Wardha Road, Near Airport Metro Station, Nagpur</p>
+<div class="flex justify-between items-center pt-3 border-t border-outline-variant/50">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-size: 16px;">directions_bus</span>
+<span class="font-label-md text-label-md">Bus ID: NG-EB-402</span>
+</div>
+<span class="font-label-md text-xs text-outline">10m ago</span>
+</div>
+</div>
+</div>
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden hover:border-primary/50 transition-colors cursor-pointer group">
+<div class="h-40 bg-surface-container relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A detailed daytime traffic camera view showing extensive alligator cracking along a busy urban street in Nagpur. The concrete and asphalt mix is visibly deteriorating under bright, clear sunlight. The image serves as a clinical data point for a smart city infrastructure dashboard. The visual style is highly realistic, objective, and integrated into a bright, white-themed corporate software interface designed for city planners." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5GA945JBwVZ14xqFCOWnxF5M1jZVAUAZ4GCD0j7wD-_IkJLMzMnI2nckIF0C6eShxbvwBo3n_K22EtHH8vIJcm776gxFOn9tdk6zqHxcxiWJEsqIfjPbYEYc2rtjyBhgH1v0uF5c2aoNvGn1sEjF1WJhAlsp3ESq3AnQ0xnyS1vFzAExFQ3D47NQpWUJMbntZ0aS1ylcnv7ZjfTfRiQw74Bkiv9ZX6syjmgCisYBv8BUILp1-ivmeGg"/>
+<div class="absolute top-2 right-2 bg-surface/90 backdrop-blur-sm border border-outline-variant rounded px-2 py-1 flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-on-tertiary-container" style="font-size: 14px; font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-md text-label-md text-on-tertiary-container">92%</span>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline-sm text-base font-semibold text-on-background">Surface Cracks</h4>
+<span class="bg-secondary/10 border border-secondary/30 text-secondary px-2 py-0.5 rounded font-label-md text-[10px] uppercase tracking-wider">Major</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mb-3 line-clamp-2">Central Avenue, Dosar Bhavan Square, Nagpur</p>
+<div class="flex justify-between items-center pt-3 border-t border-outline-variant/50">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-size: 16px;">directions_bus</span>
+<span class="font-label-md text-label-md">Bus ID: NG-EB-115</span>
+</div>
+<span class="font-label-md text-xs text-outline">24m ago</span>
+</div>
+</div>
+</div>
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden hover:border-primary/50 transition-colors cursor-pointer group">
+<div class="h-40 bg-surface-container relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="An objective, high-angle dashcam photo revealing a localized waterlogged section of a road in Nagpur, reflecting the bright daytime sky. The muddy water conceals the road surface, indicating poor drainage. The image is intended as a high-fidelity asset for a smart city AI dashboard. The tone is clinical and data-driven, fitting seamlessly into a minimalist, light-mode urban intelligence user interface with crisp contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk226n0_YEDsXWsvJWoRn5GtMw9ZzI9XPfv6xlR6eSolrQZDvSVhR-Vr71V4rHOGnotfP7a0e09leguOqyel8KjX8jxDh18PUlVSf2OGUcjnEN69EIFeRn-m96QTL4DBUwCc0yE41658YURgrQDXiDNvX6-CMD7un-TfE_s7U6IHayT_WZsNqn1_fs6DihG7n_vV3WLBpwYk1HpZaw3cOWXwHK2agqVFjrVYJm17-kOy-Pd3CWDEZ5Gw"/>
+<div class="absolute top-2 right-2 bg-surface/90 backdrop-blur-sm border border-outline-variant rounded px-2 py-1 flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-on-tertiary-container" style="font-size: 14px; font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-md text-label-md text-on-tertiary-container">95%</span>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline-sm text-base font-semibold text-on-background">Waterlogging</h4>
+<span class="bg-secondary/10 border border-secondary/30 text-secondary px-2 py-0.5 rounded font-label-md text-[10px] uppercase tracking-wider">Major</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mb-3 line-clamp-2">Manish Nagar Railway Crossing, Nagpur</p>
+<div class="flex justify-between items-center pt-3 border-t border-outline-variant/50">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-size: 16px;">directions_bus</span>
+<span class="font-label-md text-label-md">Bus ID: NG-EB-230</span>
+</div>
+<span class="font-label-md text-xs text-outline">1h ago</span>
+</div>
+</div>
+</div>
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden hover:border-primary/50 transition-colors cursor-pointer group">
+<div class="h-40 bg-surface-container relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clear, daytime snapshot from a transit vehicle showing a severely dented and tilted traffic sign on a Nagpur sidewalk. The bright ambient light highlights the metallic deformation against a background of typical urban foliage and buildings. The composition is straightforward and documentary, designed to function as a visual evidence thumbnail within a clean, professional, light-themed municipal asset management software system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCa2PJ4EQL2mcEUeWr78Lsz8MmXxbbJ8brBILKirOLXfgssNwXj_NgXXeTofRpqwBJ2C4AtDixEB3WOH61TcnHXxbwtFMzEzb4-jfCJCGNz4SM5m15YEnesfYu1RN-ZpJM4JxERsH3VgMmI6v_dBy71Axl36CES3R_Z5H9ZtOEITckTIUhioLdnuXE-V7lG1TlUK_cjEvgdny-qZusD69vMkf3cu8DjwbtsBeP1XIyw4hG8FzGojJMC0Q"/>
+<div class="absolute top-2 right-2 bg-surface/90 backdrop-blur-sm border border-outline-variant rounded px-2 py-1 flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-on-tertiary-container" style="font-size: 14px; font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-md text-label-md text-on-tertiary-container">88%</span>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline-sm text-base font-semibold text-on-background">Damaged Signage</h4>
+<span class="bg-on-primary-container/10 border border-on-primary-container/30 text-on-primary-container px-2 py-0.5 rounded font-label-md text-[10px] uppercase tracking-wider">Info</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mb-3 line-clamp-2">VIP Road, Near Dharampeth, Nagpur</p>
+<div class="flex justify-between items-center pt-3 border-t border-outline-variant/50">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-size: 16px;">directions_bus</span>
+<span class="font-label-md text-label-md">Bus ID: NG-EB-089</span>
+</div>
+<span class="font-label-md text-xs text-outline">2h ago</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
