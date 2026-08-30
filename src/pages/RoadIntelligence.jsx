@@ -156,7 +156,7 @@ export default function RoadIntelligence({ buses = [], events = [], roadHealth =
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 12 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: 12 }}>
           {fusionLogs.length > 0 ? fusionLogs.slice(0, 4).map((log) => (
             <div key={log.id} style={{
               padding: '12px 14px', borderRadius: 'var(--radius-md)',
@@ -230,7 +230,7 @@ export default function RoadIntelligence({ buses = [], events = [], roadHealth =
         </div>
 
         {temporalTab === 'decaying' ? (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 12 }}>
             {temporalData.decaying && temporalData.decaying.length > 0 ? (
               temporalData.decaying.map((item) => (
                 <div key={item.id} style={{
@@ -273,7 +273,7 @@ export default function RoadIntelligence({ buses = [], events = [], roadHealth =
             )}
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 12 }}>
             {temporalData.repaired && temporalData.repaired.length > 0 ? (
               temporalData.repaired.map((item) => (
                 <div key={item.id} style={{

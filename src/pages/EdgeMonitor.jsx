@@ -42,7 +42,7 @@ export default function EdgeMonitor({ buses, onOpenLiveCamera }) {
       </div>
 
       {/* Edge Device Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 14 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: 14 }}>
         {buses.map((bus) => (
           <div key={bus.id} className="card" style={{ padding: 16 }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>

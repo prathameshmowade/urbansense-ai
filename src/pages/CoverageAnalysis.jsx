@@ -53,7 +53,7 @@ export default function CoverageAnalysis({ buses, stats }) {
         />
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div className="glass-card" style={{ overflow: 'auto', maxHeight: 'calc(100vh - 300px)' }}>
+          <div className="glass-card" style={{ overflow: 'auto', maxHeight: 480 }}>
             <div className="card-title">🛣️ Route Coverage Status</div>
 
             {routeStats.map((route) => (
