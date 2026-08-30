@@ -351,3 +351,61 @@ export function EventTimelineChart({ events }) {
     </div>
   );
 }
+
+export function DetectionTrendsChart({ events = [] }) {
+  const data = useMemo(() => {
+    const hours = ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'];
+    const criticalData = [3, 1, 4, 8, 12, 9, 14, 6];
+    const minorData = [12, 8, 22, 45, 62, 54, 71, 38];
+
+    return {
+      labels: hours,
+      datasets: [
+        {
+          label: 'Critical & High',
+          data: criticalData,
+          borderColor: '#fd761a',
+          backgroundColor: 'rgba(253, 118, 26, 0.12)',
+          fill: true,
+          tension: 0.35,
+          borderWidth: 2,
+          pointRadius: 3,
+          pointBackgroundColor: '#fd761a',
+        },
+        {
+          label: 'Minor & Informational',
+          data: minorData,
+          borderColor: '#059669',
+          backgroundColor: 'rgba(5, 150, 105, 0.08)',
+          fill: true,
+          tension: 0.35,
+          borderWidth: 2,
+          pointRadius: 3,
+          pointBackgroundColor: '#059669',
+        },
+      ],
+    };
+  }, [events]);
+
+  return (
+    <div className="chart-container" style={{ height: 140 }}>
+      <Line
+        data={data}
+        options={{
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: cartesianScales,
+          plugins: {
+            ...basePlugins,
+            legend: {
+              ...basePlugins.legend,
+              position: 'top',
+              align: 'end',
+            },
+          },
+        }}
+      />
+    </div>
+  );
+}
+
