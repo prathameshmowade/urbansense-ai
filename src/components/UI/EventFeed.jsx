@@ -52,6 +52,9 @@ export default function EventFeed({ events }) {
             <div className="event-content">
               <div className="event-title">
                 {event.label}
+                {event.confirmedByIMU && (
+                  <span style={{ marginLeft: 6, fontSize: '0.62rem', padding: '1px 5px', borderRadius: 4, background: '#ecfdf5', color: '#059669', border: '1px solid #a7f3d0', fontWeight: 700 }}>⚡ IMU {event.fusion?.zAxisPeak}g</span>
+                )}
                 {event.crossVerified && (
                   <span style={{ marginLeft: 6, fontSize: '0.65rem', color: 'var(--accent-success)' }}>✓ Cross-verified</span>
                 )}
@@ -60,6 +63,12 @@ export default function EventFeed({ events }) {
                 <span>{event.busId}</span>
                 <span>•</span>
                 <span>{formatTime(event.timestamp)}</span>
+                {event.geofenceZone && (
+                  <>
+                    <span>•</span>
+                    <span style={{ color: event.geofenceZone.color, fontWeight: 600, fontSize: '0.68rem' }}>{event.geofenceZone.icon} {event.geofenceZone.name.split(' ')[0]}</span>
+                  </>
+                )}
                 <span>•</span>
                 <span className={`severity-badge ${getSeverityClass(event.severity)}`}>
                   {event.severity}

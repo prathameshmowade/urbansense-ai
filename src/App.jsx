@@ -24,6 +24,8 @@ function App() {
   });
   const [congestionData, setCongestionData] = useState([]);
   const [roadHealth, setRoadHealth] = useState([]);
+  const [temporalData, setTemporalData] = useState({ decaying: [], repaired: [], summary: {} });
+  const [fusionLogs, setFusionLogs] = useState([]);
   const [criticalAlert, setCriticalAlert] = useState(null);
   const [isLiveCameraOpen, setIsLiveCameraOpen] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
@@ -35,6 +37,8 @@ function App() {
     setBuses(initialState.buses);
     setEvents(initialState.events);
     setStats(initialState.stats);
+    if (initialState.temporalData) setTemporalData(initialState.temporalData);
+    if (initialState.fusionLogs) setFusionLogs(initialState.fusionLogs);
   }, []);
 
   // Run simulation tick every 1.5 seconds
@@ -47,6 +51,8 @@ function App() {
       setStats(result.stats);
       setCongestionData(result.congestionHeatData);
       setRoadHealth(result.roadHealth);
+      if (result.temporalData) setTemporalData(result.temporalData);
+      if (result.fusionLogs) setFusionLogs(result.fusionLogs);
 
       if (result.newEvents.length > 0) {
         setEvents(prev => [...result.newEvents, ...prev].slice(0, 200));
@@ -106,6 +112,8 @@ function App() {
                 stats={stats}
                 congestionData={congestionData}
                 roadHealth={roadHealth}
+                fusionLogs={fusionLogs}
+                temporalData={temporalData}
                 onOpenLiveCamera={() => setIsLiveCameraOpen(true)}
               />
             } />
@@ -117,6 +125,9 @@ function App() {
                 buses={buses}
                 events={events}
                 roadHealth={roadHealth}
+                temporalData={temporalData}
+                fusionLogs={fusionLogs}
+                stats={stats}
               />
             } />
             <Route path="/traffic" element={

@@ -1,6 +1,10 @@
 // Fleet Simulator Engine — generates realistic bus movement + detection events
+// Integrated with Sensor Fusion, Dynamic Geofencing, and Temporal Road Degradation Mapping
 import { busRoutes, busFleet } from './nagpurRoutes.js';
 import { EVENT_TYPES, generatePlateNumber, VEHICLE_CLASSES } from './eventTypes.js';
+import { sensorFusion } from './sensorFusion.js';
+import { geofenceEngine } from './geofenceEngine.js';
+import { temporalMapper } from './temporalMapper.js';
 
 // Haversine interpolation between two GPS points
 function interpolate(p1, p2, t) {
@@ -37,8 +41,8 @@ function weightedRandom(items) {
   return items[items.length - 1].value;
 }
 
-// Event generation probabilities (per tick per bus)
-const EVENT_WEIGHTS = [
+// Event generation base probabilities (per tick per bus)
+const BASE_EVENT_WEIGHTS = [
   { value: 'POTHOLE', weight: 0.15 },
   { value: 'CRACK', weight: 0.12 },
   { value: 'WATERLOGGING', weight: 0.05 },
@@ -59,14 +63,15 @@ const EVENT_WEIGHTS = [
 ];
 
 const CAMERAS = ['front', 'rear', 'left', 'right'];
-const SEVERITIES = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'];
 
-function generateDetection(bus, position) {
-  const eventTypeKey = weightedRandom(EVENT_WEIGHTS);
+function generateDetection(bus, position, activeZone) {
+  // Apply dynamic geofence weight tuning if inside specialized zone
+  const activeWeights = geofenceEngine.getAdjustedWeights(BASE_EVENT_WEIGHTS, activeZone);
+  const eventTypeKey = weightedRandom(activeWeights);
   const eventType = EVENT_TYPES[eventTypeKey];
   if (!eventType) return null;
 
-  const confidence = 0.65 + Math.random() * 0.34; // 0.65 - 0.99
+  const rawConfidence = 0.65 + Math.random() * 0.34; // 0.65 - 0.99
   const camera = CAMERAS[Math.floor(Math.random() * CAMERAS.length)];
 
   const event = {
@@ -77,7 +82,7 @@ function generateDetection(bus, position) {
     icon: eventType.icon,
     color: eventType.color,
     severity: eventType.defaultSeverity,
-    confidence: Math.round(confidence * 100) / 100,
+    confidence: Math.round(rawConfidence * 100) / 100,
     lat: position[0],
     lng: position[1],
     busId: bus.id,
@@ -86,7 +91,32 @@ function generateDetection(bus, position) {
     camera,
     timestamp: new Date().toISOString(),
     description: eventType.description,
+    geofenceZone: activeZone ? {
+      id: activeZone.id,
+      name: activeZone.name,
+      icon: activeZone.icon,
+      color: activeZone.color,
+    } : null,
   };
+
+  // Feature 1: Vision + IoT Sensor Fusion for Road Defects
+  if (['POTHOLE', 'CRACK', 'DAMAGED_ROAD', 'WATERLOGGING'].includes(eventTypeKey)) {
+    const fusionResult = sensorFusion.correlate(event, bus);
+    if (fusionResult) {
+      event.fusion = fusionResult;
+      event.confidence = fusionResult.fusionConfidence;
+      if (!fusionResult.imuConfirmed) {
+        event.isFalsePositive = true;
+        event.severity = 'LOW';
+        event.label = `${eventType.label} (Visual Only)`;
+      } else {
+        event.confirmedByIMU = true;
+      }
+    }
+
+    // Feature 3: Temporal lifecycle observation
+    temporalMapper.recordObservation(event, bus);
+  }
 
   // Add ANPR data for incidents/violations
   if (['HIT_AND_RUN', 'ANPR_CAPTURE', 'RED_LIGHT_VIOLATION', 'SPEED_VIOLATION', 'RASH_DRIVING'].includes(eventTypeKey)) {
@@ -126,7 +156,7 @@ function generateDetection(bus, position) {
   if (eventTypeKey === 'SPEED_VIOLATION') {
     event.speedData = {
       detected: Math.floor(Math.random() * 40) + 60,
-      limit: 40,
+      limit: activeZone?.id === 'ZONE_SCHOOL' ? 25 : 40,
     };
   }
 
@@ -182,7 +212,7 @@ function spatialDedup(event) {
   
   clusters.push(newCluster);
   
-  // Cleanup old clusters (older than 3 minutes in demo — 3 days in production)
+  // Cleanup old clusters
   const cutoff = Date.now() - 3 * 60 * 1000;
   spatialClusters.set(
     key,
@@ -207,6 +237,10 @@ class FleetSimulator {
       coveragePercent: 0,
       avgInferenceLatency: 0,
       bandwidthSaved: 0,
+      imuConfirmedDefects: 0,
+      falsePositivesFiltered: 0,
+      activeDecayHotspots: 0,
+      verifiedRepairsCount: 0,
     };
     this.congestionGrid = {};
     this.roadHealthSegments = {};
@@ -228,12 +262,16 @@ class FleetSimulator {
       const pos = interpolate(wp[idx], wp[nextIdx], bus.progress);
       bus.position = jitter(pos);
       bus.speed = 15 + Math.random() * 35;
+      bus.activeZone = geofenceEngine.checkZone(bus.position);
     }
   }
   
   tick() {
     this.tickCount++;
     const newEvents = [];
+
+    // Periodic simulation of municipal repair verification
+    temporalMapper.simulateRepairVerification(this.tickCount);
     
     for (const bus of this.buses) {
       if (bus.status !== 'active') continue;
@@ -264,6 +302,9 @@ class FleetSimulator {
       const pos = interpolate(wp[idx], wp[nextIdx], bus.progress);
       bus.position = jitter(pos);
       
+      // Check for active Geofence zone
+      bus.activeZone = geofenceEngine.checkZone(bus.position);
+      
       // Vary speed
       bus.speed = Math.max(5, Math.min(60, bus.speed + (Math.random() - 0.5) * 5));
       
@@ -279,7 +320,7 @@ class FleetSimulator {
       
       // Generate detection events (probability per tick)
       if (Math.random() < 0.15) {
-        const event = generateDetection(bus, bus.position);
+        const event = generateDetection(bus, bus.position, bus.activeZone);
         if (event) {
           const { isDuplicate, cluster } = spatialDedup(event);
           
@@ -310,7 +351,7 @@ class FleetSimulator {
           }
           
           // Update road health
-          if (['POTHOLE', 'CRACK', 'DAMAGED_ROAD', 'WATERLOGGING'].includes(event.type)) {
+          if (['POTHOLE', 'CRACK', 'DAMAGED_ROAD', 'WATERLOGGING'].includes(event.type) && !event.isFalsePositive) {
             const rhKey = `${Math.round(pos[0] * 300)}_${Math.round(pos[1] * 300)}`;
             if (!this.roadHealthSegments[rhKey]) {
               this.roadHealthSegments[rhKey] = { lat: pos[0], lng: pos[1], defects: 0, score: 100 };
@@ -323,6 +364,9 @@ class FleetSimulator {
     }
     
     // Update aggregate stats
+    const fusionStats = sensorFusion.getStats();
+    const temporalStats = temporalMapper.getTemporalSummary();
+
     this.stats.busesActive = this.buses.filter(b => b.status === 'active').length;
     this.stats.activeAlerts = this.events.filter(e => 
       ['CRITICAL', 'HIGH'].includes(e.severity) && 
@@ -335,31 +379,50 @@ class FleetSimulator {
     this.stats.bandwidthSaved = Math.round(
       (this.stats.duplicatesAvoided / Math.max(1, this.stats.totalEvents)) * 100
     );
+    this.stats.imuConfirmedDefects = fusionStats.confirmedCount;
+    this.stats.falsePositivesFiltered = fusionStats.falsePositivesFiltered;
+    this.stats.activeDecayHotspots = temporalStats.activeDecayHotspots;
+    this.stats.verifiedRepairsCount = temporalStats.verifiedRepairsCount;
     
     return {
       buses: this.buses.map(b => ({
         ...b,
         position: b.position,
+        activeZone: b.activeZone,
         edgeDevice: { ...b.edgeDevice },
       })),
       newEvents,
       stats: { ...this.stats },
       congestionHeatData: Object.values(this.congestionGrid).map(c => [c.lat, c.lng, c.intensity]),
       roadHealth: Object.values(this.roadHealthSegments),
+      temporalData: {
+        decaying: temporalMapper.getDecayingLocations(),
+        repaired: temporalMapper.getRepairedLocations(),
+        summary: temporalStats,
+      },
+      fusionLogs: sensorFusion.getRecentLogs(8),
     };
   }
   
   getState() {
+    const temporalStats = temporalMapper.getTemporalSummary();
     return {
       buses: this.buses.map(b => ({
         ...b,
         position: b.position,
+        activeZone: b.activeZone,
         edgeDevice: { ...b.edgeDevice },
       })),
       events: this.events.slice(0, 100),
       stats: { ...this.stats },
       congestionHeatData: Object.values(this.congestionGrid).map(c => [c.lat, c.lng, c.intensity]),
       roadHealth: Object.values(this.roadHealthSegments),
+      temporalData: {
+        decaying: temporalMapper.getDecayingLocations(),
+        repaired: temporalMapper.getRepairedLocations(),
+        summary: temporalStats,
+      },
+      fusionLogs: sensorFusion.getRecentLogs(8),
     };
   }
 }

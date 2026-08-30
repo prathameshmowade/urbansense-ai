@@ -1,8 +1,9 @@
 import { useEffect, useRef, useMemo } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polyline, CircleMarker } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, CircleMarker, Circle } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { NAGPUR_CENTER, busRoutes } from '../../data/nagpurRoutes';
+import { GEOFENCE_ZONES } from '../../data/geofenceEngine';
 
 // Fix default marker icon
 delete L.Icon.Default.prototype._getIconUrl;
@@ -94,6 +95,7 @@ export default function LiveMap({
   showHeatMap = true,
   showRoadHealth = false,
   showEvents = true,
+  showGeofences = true,
   height = '100%',
 }) {
   const mapRef = useRef(null);
@@ -137,12 +139,42 @@ export default function LiveMap({
         zoomControl={true}
         ref={mapRef}
       >
-        {/* Fast reliable OpenStreetMap Tiles with Dark Theme CSS */}
+        {/* Fast reliable OpenStreetMap Tiles */}
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           maxZoom={19}
         />
+
+        {/* Feature 2: Smart Geofence Zones Overlay */}
+        {showGeofences && GEOFENCE_ZONES.map((zone) => (
+          <Circle
+            key={zone.id}
+            center={zone.center}
+            radius={zone.radius}
+            pathOptions={{
+              color: zone.color,
+              fillColor: zone.color,
+              fillOpacity: 0.12,
+              weight: 2,
+              dashArray: '5 5',
+            }}
+          >
+            <Popup>
+              <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.8rem', minWidth: 200 }}>
+                <div style={{ fontWeight: 700, fontSize: '0.9rem', marginBottom: 4, color: zone.color }}>
+                  {zone.icon} {zone.name}
+                </div>
+                <div style={{ fontSize: '0.74rem', color: '#475569', marginBottom: 6, lineHeight: 1.3 }}>
+                  {zone.description}
+                </div>
+                <div style={{ background: `${zone.color}15`, padding: '4px 8px', borderRadius: 4, fontSize: '0.72rem', fontWeight: 600, color: zone.color }}>
+                  🎯 {zone.focusLabel}
+                </div>
+              </div>
+            </Popup>
+          </Circle>
+        ))}
 
         {/* Route lines */}
         {routeLines}
@@ -162,17 +194,22 @@ export default function LiveMap({
               icon={createBusIcon(bus.routeColor, bus.status === 'active')}
             >
               <Popup>
-                <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.8rem', minWidth: 180 }}>
+                <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.8rem', minWidth: 190 }}>
                   <div style={{ fontWeight: 700, fontSize: '0.9rem', marginBottom: 6, color: bus.routeColor }}>
                     🚌 {bus.id}
                   </div>
                   <div style={{ display: 'grid', gap: 3 }}>
                     <div>Route: <strong>{bus.routeName}</strong></div>
                     <div>Speed: <strong>{Math.round(bus.speed)} km/h</strong></div>
-                    <div>Status: <strong style={{ color: bus.status === 'active' ? '#22c55e' : '#94a3b8' }}>{bus.status}</strong></div>
-                    <div>Edge FPS: <strong>{bus.edgeDevice.fps}</strong></div>
-                    <div>GPU: <strong>{bus.edgeDevice.gpuUtil}%</strong></div>
-                    <div>Inference: <strong>{bus.edgeDevice.inferenceLatency}ms</strong></div>
+                    <div>Status: <strong style={{ color: bus.status === 'active' ? '#16a34a' : '#64748b' }}>{bus.status}</strong></div>
+                    {bus.activeZone && (
+                      <div style={{ marginTop: 2, padding: '3px 6px', background: `${bus.activeZone.color}18`, borderRadius: 4, fontSize: '0.72rem', color: bus.activeZone.color, fontWeight: 600 }}>
+                        {bus.activeZone.icon} Inside {bus.activeZone.name.split(' ')[0]} Zone
+                      </div>
+                    )}
+                    <div style={{ fontSize: '0.72rem', color: '#64748b', marginTop: 4, paddingTop: 4, borderTop: '1px solid #e2e8f0' }}>
+                      FPS: <strong>{bus.edgeDevice.fps}</strong> · GPU: <strong>{bus.edgeDevice.gpuUtil}%</strong> · Latency: <strong>{bus.edgeDevice.inferenceLatency}ms</strong>
+                    </div>
                   </div>
                 </div>
               </Popup>
@@ -188,24 +225,39 @@ export default function LiveMap({
             icon={createEventIcon(event)}
           >
             <Popup>
-              <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.8rem', minWidth: 200 }}>
+              <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.8rem', minWidth: 210 }}>
                 <div style={{ fontWeight: 700, fontSize: '0.9rem', marginBottom: 4, color: event.color }}>
                   {event.icon} {event.label}
                 </div>
                 <div style={{ display: 'grid', gap: 3 }}>
                   <div>Severity: <strong>{event.severity}</strong></div>
                   <div>Confidence: <strong>{Math.round(event.confidence * 100)}%</strong></div>
-                  <div>Bus: <strong>{event.busId}</strong></div>
-                  <div>Camera: <strong>{event.camera}</strong></div>
-                  <div>Time: <strong>{new Date(event.timestamp).toLocaleTimeString('en-IN')}</strong></div>
+                  <div>Bus: <strong>{event.busId}</strong> ({event.camera} cam)</div>
+                  
+                  {/* Sensor Fusion Status */}
+                  {event.confirmedByIMU && (
+                    <div style={{ fontSize: '0.72rem', color: '#059669', background: '#ecfdf5', padding: '3px 6px', borderRadius: 4, fontWeight: 600 }}>
+                      ⚡ IMU Verified Shock: {event.fusion?.zAxisPeak}g
+                    </div>
+                  )}
+                  {event.isFalsePositive && (
+                    <div style={{ fontSize: '0.72rem', color: '#d97706', background: '#fffbeb', padding: '3px 6px', borderRadius: 4, fontWeight: 600 }}>
+                      ⚠️ Optical Alert: Zero IMU vibration (shadow/water)
+                    </div>
+                  )}
+
+                  {/* Geofence Context */}
+                  {event.geofenceZone && (
+                    <div style={{ fontSize: '0.7rem', color: event.geofenceZone.color }}>
+                      Zone: {event.geofenceZone.icon} {event.geofenceZone.name}
+                    </div>
+                  )}
+
                   {event.anpr && (
-                    <>
-                      <div style={{ marginTop: 4, paddingTop: 4, borderTop: '1px solid rgba(148,163,184,0.2)' }}>
-                        Plate: <strong style={{ fontFamily: 'monospace' }}>{event.anpr.plateNumber}</strong>
-                      </div>
-                      <div>OCR Conf: <strong>{Math.round(event.anpr.ocrConfidence * 100)}%</strong></div>
-                      <div>Vehicle: <strong>{event.anpr.vehicleColor} {event.anpr.vehicleType}</strong></div>
-                    </>
+                    <div style={{ marginTop: 4, paddingTop: 4, borderTop: '1px solid #e2e8f0' }}>
+                      Plate: <strong style={{ fontFamily: 'monospace' }}>{event.anpr.plateNumber}</strong> ({Math.round(event.anpr.ocrConfidence * 100)}%)<br />
+                      Vehicle: {event.anpr.vehicleColor} {event.anpr.vehicleType}
+                    </div>
                   )}
                 </div>
               </div>
