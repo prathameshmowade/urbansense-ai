@@ -1300,6 +1300,211 @@ body {
   }
 }
 
+/* ===== COMMAND CENTER BENTO GRID (CLASS-BASED RESPONSIVE) ===== */
+.cc-header {
+  margin-bottom: 18px;
+}
+
+.cc-header-title-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.cc-header h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.cc-header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.cc-search-wrap {
+  position: relative;
+  min-width: 220px;
+}
+
+.cc-search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.cc-search-input {
+  width: 100%;
+  padding: 7px 12px 7px 32px;
+  font-size: 0.8rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  outline: none;
+  font-family: var(--font-sans);
+}
+
+.cc-search-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(253, 118, 26, 0.12);
+}
+
+.cc-location-pill {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.cc-live-badge {
+  padding: 6px 10px;
+}
+
+/* Bento 12-col Grid — Desktop (default) */
+.cc-bento-grid {
+  display: grid;
+  grid-template-columns: 3fr 6fr 3fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.cc-bento-kpis {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cc-bento-map {
+  min-height: 460px;
+}
+
+.cc-bento-feed {
+  min-height: 460px;
+}
+
+/* Bento KPI Card Styles */
+.cc-bento-kpi-card {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cc-kpi-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.cc-kpi-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.cc-kpi-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  line-height: 1.1;
+}
+
+.cc-kpi-trend-green {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #059669;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.cc-kpi-trend-red {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.cc-kpi-sub {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.cc-kpi-sub-inline {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.cc-progress-track {
+  width: 100%;
+  height: 5px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.cc-progress-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+
+/* Trends Panel */
+.cc-trends-panel {
+  margin-top: 8px;
+  padding: 16px 20px;
+}
+
+.cc-trends-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cc-trends-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.cc-trends-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.cc-trends-badge {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  background: var(--bg-surface-subtle);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+  white-space: nowrap;
+}
+
 /* ===== STITCH DESIGN SYSTEM UTILITIES ===== */
 .btn {
   display: inline-flex;
@@ -1379,4 +1584,348 @@ body {
   font-weight: 600;
   box-shadow: 0 1px 4px rgba(253, 118, 26, 0.3);
 }
+
+/* ===== BOTTOM NAV ICON WRAPPER (Fix relative positioning for badge) ===== */
+.bottom-nav-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== ENHANCED MOBILE RESPONSIVENESS ===== */
+
+/* Tablet landscape: Bento grid → 2 cols (KPI row on top, map + feed side by side) */
+@media (max-width: 1200px) {
+  .cc-bento-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .cc-bento-kpis {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .cc-bento-kpi-card {
+    flex: 1 1 calc(25% - 10px);
+    min-width: 160px;
+  }
+
+  .cc-bento-map {
+    min-height: 400px;
+  }
+
+  .cc-bento-feed {
+    min-height: 400px;
+  }
+}
+
+/* Tablet portrait */
+@media (max-width: 1024px) {
+  .cc-bento-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cc-bento-kpis {
+    grid-column: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .cc-bento-kpi-card {
+    flex: 1 1 calc(50% - 8px);
+    min-width: 140px;
+  }
+
+  .cc-bento-map {
+    min-height: 360px;
+    height: 400px;
+  }
+
+  .cc-bento-feed {
+    min-height: auto;
+    height: 380px;
+  }
+
+  .cc-kpi-value {
+    font-size: 1.65rem;
+  }
+
+  .cc-search-wrap {
+    min-width: 180px;
+  }
+
+  /* Hide location pill on tablets to save space */
+  .cc-location-pill {
+    display: none;
+  }
+}
+
+/* Phone screens */
+@media (max-width: 768px) {
+  .cc-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .cc-header-actions {
+    gap: 8px;
+    width: 100%;
+  }
+
+  .cc-search-wrap {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cc-bento-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .cc-bento-kpis {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .cc-bento-kpi-card {
+    flex: 1 1 calc(50% - 6px);
+    min-width: 130px;
+    padding: 12px 14px;
+  }
+
+  .cc-kpi-value {
+    font-size: 1.45rem;
+  }
+
+  .cc-kpi-label {
+    font-size: 0.68rem;
+  }
+
+  .cc-kpi-sub {
+    font-size: 0.65rem;
+  }
+
+  .cc-bento-map {
+    min-height: 280px;
+    height: 320px;
+  }
+
+  .cc-bento-feed {
+    height: 350px;
+  }
+
+  .cc-trends-panel {
+    padding: 12px 14px;
+  }
+
+  .cc-trends-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cc-trends-title {
+    font-size: 0.85rem;
+  }
+
+  /* Live Camera Modal: Full-screen on mobile */
+  .live-cam-modal {
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+  }
+
+  .live-cam-modal [style*="min(420px"] {
+    height: 45vh !important;
+  }
+}
+
+/* Extra-small phones */
+@media (max-width: 480px) {
+  .cc-bento-kpi-card {
+    flex: 1 1 100%;
+  }
+
+  .cc-kpi-row {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .cc-kpi-value {
+    font-size: 1.35rem;
+  }
+
+  .cc-header-actions {
+    flex-wrap: wrap;
+  }
+
+  /* Make buttons touch-friendly */
+  .btn {
+    padding: 10px 16px;
+    font-size: 0.82rem;
+    min-height: 42px;
+  }
+
+  .btn-sm {
+    padding: 8px 12px;
+    min-height: 36px;
+  }
+
+  .filter-tab {
+    padding: 8px 14px;
+    font-size: 0.76rem;
+    min-height: 36px;
+  }
+
+  /* Bottom nav: taller for easier tapping */
+  .mobile-bottom-nav {
+    height: 64px;
+    padding: 4px 4px calc(4px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .bottom-nav-item {
+    padding: 6px 8px;
+    font-size: 0.62rem;
+    min-width: 52px;
+  }
+
+  /* Data table: Card-style rendering on very small phones */
+  .data-table thead {
+    display: none;
+  }
+
+  .data-table,
+  .data-table tbody,
+  .data-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .data-table tr {
+    margin-bottom: 10px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    overflow: hidden;
+  }
+
+  .data-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.76rem;
+  }
+
+  .data-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+    margin-right: 8px;
+  }
+
+  .data-table td:last-child {
+    border-bottom: none;
+  }
+
+  /* Fusion / Temporal cards: single column on small phones */
+  .glass-card [style*="gridTemplateColumns: 'repeat(auto-fit"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ===== VIEWPORT META HELPERS ===== */
+/* Safe area insets for notched phones (iPhone X+) */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .mobile-bottom-nav {
+    padding-bottom: calc(4px + env(safe-area-inset-bottom));
+  }
+
+  .page-container {
+    padding-bottom: calc(76px + env(safe-area-inset-bottom));
+  }
+}
+
+/* Prevent text size adjustment on orientation change */
+@media (max-width: 1024px) {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+}
+
+/* Touch device improvements */
+@media (hover: none) and (pointer: coarse) {
+  /* Disable hover effects that cause sticky states on touch */
+  .kpi-card:hover {
+    transform: none;
+  }
+
+  .glass-card:hover,
+  .card:hover {
+    box-shadow: var(--shadow-xs);
+    border-color: var(--border-subtle);
+  }
+
+  .btn-primary:hover {
+    transform: none;
+  }
+
+  /* Larger tap targets */
+  .nav-item {
+    padding: 10px 12px;
+    min-height: 44px;
+  }
+
+  .filter-tab {
+    min-height: 38px;
+  }
+
+  .event-item {
+    padding: 12px 14px;
+  }
+
+  /* Smooth momentum scrolling for panels */
+  .event-feed-list,
+  .sidebar-nav {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ===== LANDSCAPE PHONE (prevent oversized map) ===== */
+@media (max-height: 500px) and (orientation: landscape) {
+  .cc-bento-map,
+  .map-container {
+    min-height: 220px;
+    height: 260px;
+  }
+
+  .page-container {
+    padding: 10px 12px calc(66px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .mobile-header {
+    height: 48px;
+  }
+
+  .main-content {
+    padding-top: 48px;
+  }
+
+  .mobile-bottom-nav {
+    height: 52px;
+  }
+}
+
 

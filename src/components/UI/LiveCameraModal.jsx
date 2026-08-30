@@ -520,7 +520,7 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
       background: 'rgba(15, 23, 42, 0.55)', backdropFilter: 'blur(6px)',
       display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 12
     }}>
-      <div className="card animate-scale-in" style={{
+      <div className="card animate-scale-in live-cam-modal" style={{
         width: '100%', maxWidth: 940, maxHeight: '94vh', overflow: 'hidden',
         display: 'flex', flexDirection: 'column', padding: 0,
         background: '#ffffff', border: '1px solid var(--border-medium)',

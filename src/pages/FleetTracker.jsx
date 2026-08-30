@@ -48,12 +48,12 @@ export default function FleetTracker({ buses = [], stats = {} }) {
             <tbody>
               {buses.map(bus => (
                 <tr key={bus.id}>
-                  <td style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{bus.id}</td>
-                  <td>
+                  <td data-label="Bus ID" style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{bus.id}</td>
+                  <td data-label="Route">
                     <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: bus.routeColor, marginRight: 6 }}></span>
                     <span style={{ fontSize: '0.78rem', fontWeight: 500 }}>{bus.routeId}</span>
                   </td>
-                  <td>
+                  <td data-label="AI Focus">
                     {bus.activeZone ? (
                       <span style={{
                         fontSize: '0.68rem', fontWeight: 600, padding: '3px 8px', borderRadius: 6,
@@ -67,13 +67,13 @@ export default function FleetTracker({ buses = [], stats = {} }) {
                       <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Standard (All)</span>
                     )}
                   </td>
-                  <td>{Math.round(bus.speed)} km/h</td>
-                  <td>
+                  <td data-label="Speed">{Math.round(bus.speed)} km/h</td>
+                  <td data-label="Status">
                     <span className={`badge ${bus.status === 'active' ? 'badge-active' : 'badge-idle'}`}>
                       {bus.status}
                     </span>
                   </td>
-                  <td>
+                  <td data-label="GPU">
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <div className="progress-bar" style={{ width: 45 }}>
                         <div className="progress-fill" style={{
@@ -84,7 +84,7 @@ export default function FleetTracker({ buses = [], stats = {} }) {
                       <span style={{ fontSize: '0.68rem', fontFamily: 'var(--font-mono)' }}>{bus.edgeDevice.gpuUtil}%</span>
                     </div>
                   </td>
-                  <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>{bus.edgeDevice.fps}</td>
+                  <td data-label="FPS" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>{bus.edgeDevice.fps}</td>
                 </tr>
               ))}
             </tbody>
