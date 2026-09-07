@@ -13,12 +13,32 @@
 
 ## ✨ Key Features
 
-- 🛣️ **Automated Road Intelligence**: Real-time detection and geospatial clustering of potholes, cracks, waterlogging, and road debris.
+- 🛣️ **Automated Road Intelligence**: Real-time detection and geospatial clustering of potholes, cracks, waterlogging, and road damage.
+- 🎯 **ByteTrack Defect Persistence**: Object tracking prevents duplicate counting of the same pothole/crack across consecutive video frames.
+- 📐 **Severity Indexing & Road Condition Score (0–100)**: Quantitative scoring of pavement deterioration based on defect geometry, surface density, and Pavement Condition Index (PCI) standards.
+- 📈 **Time-Series Deterioration Monitoring**: Multi-pass historical degradation tracking to catch expanding micro-cracks before structural base failure.
+- 🔧 **Predictive Maintenance Planning**: Algorithmic generation of municipal work orders, prioritizing asphalt patching vs. resurfacing with material tonnage estimates.
 - 🚦 **Dynamic Traffic Analytics**: Congestion heatmaps, corridor density tracking, and speed profiling across transit routes.
 - 🚨 **Real-Time Incident Management**: Automated alerts for vehicle breakdowns, traffic obstruction, and safety anomalies with live video feeds.
-- ⚡ **Edge AI & Low-Bandwidth Telemetry**: Local inference using TensorFlow.js / Python edge pipelines with deduplication to minimize 4G/5G data overhead.
+- ⚡ **Edge AI & Low-Bandwidth Telemetry**: Local inference using YOLO, TensorFlow.js, and OpenCV with deduplication to minimize 4G/5G data overhead.
 - 🚌 **Live Fleet Tracking**: Real-time GPS positioning, route telemetry, and sensor health diagnostics for all active buses.
-- 🗺️ **Interactive Command Center**: High-performance Leaflet mapping, density heatmaps, and customizable analytical dashboards.
+- 📊 **Dual Command Centers**: High-performance React 19 web command center + dedicated Streamlit inspection and time-series analytics dashboard.
+
+---
+
+## 🔄 Road Condition Monitoring Workflow
+
+```mermaid
+graph LR
+    A[Road Video / Dashcam] -->|Video Ingestion| B(YOLO Object Detection)
+    B -->|Potholes, Cracks, Damaged Pavement| C(ByteTrack Object Tracking)
+    C -->|Persistent Defect ID & Trajectory| D(Severity Estimation)
+    D -->|Area Ratio, Depth Variance| E(Road Condition Score 0-100)
+    E -->|SQLite / CSV Flatfile Storage| F(Historical & Time-Series Analysis)
+    F -->|Decay Rate & Priority Queue| G[Predictive Maintenance Planning]
+```
+
+> **The Paradigm Shift**: Traditional systems stop at identifying isolated potholes. UrbanSense AI transforms road inspection from reactive alert-triggering into continuous lifecycle road-condition scoring, severity quantification, deterioration forecasting, and automated municipal work-order planning.
 
 ---
 
@@ -26,23 +46,25 @@
 
 ```mermaid
 graph TD
-    A[Public Transit Fleet] -->|Onboard Dashcam & Sensors| B(Edge AI Processing Unit)
-    B -->|TensorFlow / OpenCV Inference| C{Deduplication & Event Filter}
-    C -->|High-Priority Events & Telemetry| D[Cloud / City Backend]
-    D -->|Real-Time Socket Stream| E[UrbanSense AI Command Center]
-    E --> F[Municipal Works / PWD]
-    E --> G[Traffic Police / Emergency]
-    E --> H[Public Transit Operators]
+    A[Public Transit Fleet / Dashcams] -->|Onboard Dashcam & IMU Sensors| B(Edge AI Processing Unit)
+    B -->|YOLO + ByteTrack Inference| C{Severity Scoring & Deduplication}
+    C -->|SQLite / CSV Persistence & Socket Stream| D[Cloud / City Backend]
+    D --> E[UrbanSense AI Command Center - React 19]
+    D --> F[Streamlit Road Intelligence Dashboard]
+    E & F --> G[Municipal Works / PWD Maintenance Orders]
+    E --> H[Traffic Police / Emergency Services]
 ```
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: React 19, Vite, React Router, Lucide Icons, Chart.js, Leaflet / React-Leaflet, Leaflet Heat
-- **AI & Vision**: TensorFlow.js, COCO-SSD, OpenCV Edge Pipeline (Python)
-- **Backend / Real-time**: Node.js, Express, Socket.io
-- **Styling**: Modern dark-theme design system with glassmorphism & responsive layouts
+- **Computer Vision & AI**: Ultralytics YOLO11 (State-of-the-art vision architecture with C3k2 & C2PSA attention), ByteTrack Multi-Object Tracker, OpenCV, TensorFlow.js
+- **Severity & Scoring**: Pavement Condition Index (PCI 0–100), Laplacian depth variance, bounding-box area ratios
+- **Data & Storage**: SQLite (`road_damage.db`), CSV exports, Pandas, Time-series analysis
+- **Frontend Command Center**: React 19, Vite, Leaflet / React-Leaflet, Chart.js, Lucide Icons
+- **Analytics Dashboard**: Streamlit, Plotly Express & Graph Objects, PyDeck GIS mapping
+- **Backend / Real-time**: Node.js, Express, Socket.io, Python Edge Pipelines
 
 ---
 
@@ -51,33 +73,35 @@ graph TD
 ### Prerequisites
 - Node.js (v18+)
 - npm or yarn
-- Python 3.10+ (for edge pipeline simulation)
+- Python 3.10+ (for edge pipeline and Streamlit dashboard)
 
-### Installation
+### 1. React Command Center Setup
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/prathameshmowade/urbansense-ai.git
-   cd urbansense-ai
-   ```
+```bash
+# Install frontend dependencies
+npm install
 
-2. **Install frontend dependencies:**
-   ```bash
-   npm install
-   ```
+# Start the Vite development server
+npm run dev
+# Open http://localhost:5173
+```
 
-3. **Start the development server:**
-   ```bash
-   npm run dev
-   ```
-   Open your browser at `http://localhost:5173`.
+### 2. Road Condition Engine & Streamlit Dashboard Setup
 
-4. **(Optional) Run Edge Python Pipeline:**
-   ```bash
-   cd edge
-   pip install -r requirements.txt
-   python edge_pipeline.py
-   ```
+```bash
+# Navigate to edge directory
+cd edge
+
+# Install Python requirements
+pip install -r requirements.txt
+
+# Run the end-to-end Road Condition Analysis Engine (Video → YOLO → ByteTrack → Severity → SQLite/CSV)
+python road_analysis_engine.py
+
+# Launch the Streamlit Analytics & Inspection Dashboard
+streamlit run streamlit_app.py
+# Open http://localhost:8501
+```
 
 ---
 

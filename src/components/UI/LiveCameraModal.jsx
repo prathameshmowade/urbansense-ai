@@ -517,7 +517,7 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
   return (
     <div style={{
       position: 'fixed', inset: 0, zIndex: 9999,
-      background: 'rgba(15, 23, 42, 0.55)', backdropFilter: 'blur(6px)',
+      background: 'rgba(15, 23, 42, 0.55)', WebkitBackdropFilter: 'blur(6px)', backdropFilter: 'blur(6px)',
       display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 12
     }}>
       <div className="card animate-scale-in live-cam-modal" style={{
@@ -670,7 +670,7 @@ export default function LiveCameraModal({ isOpen, onClose, onEmitEvent }) {
               onClick={toggleFacingMode}
               style={{
                 position: 'absolute', top: 12, right: 12, zIndex: 20,
-                background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(8px)',
+                background: 'rgba(15, 23, 42, 0.85)', WebkitBackdropFilter: 'blur(8px)', backdropFilter: 'blur(8px)',
                 border: '1px solid rgba(255, 255, 255, 0.25)', borderRadius: 20,
                 padding: '6px 12px', color: '#ffffff', display: 'flex',
                 alignItems: 'center', gap: 6, fontSize: '0.74rem', fontWeight: 600,

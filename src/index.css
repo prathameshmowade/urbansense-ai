@@ -1042,6 +1042,7 @@ body {
   position: fixed;
   inset: 0;
   background: rgba(15, 23, 42, 0.45);
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   z-index: 998;
   opacity: 0;
@@ -1646,7 +1647,7 @@ body {
   }
 
   .cc-bento-feed {
-    min-height: auto;
+    min-height: 0;
     height: 380px;
   }
 
@@ -1894,12 +1895,6 @@ body {
 
   .event-item {
     padding: 12px 14px;
-  }
-
-  /* Smooth momentum scrolling for panels */
-  .event-feed-list,
-  .sidebar-nav {
-    -webkit-overflow-scrolling: touch;
   }
 }
 
